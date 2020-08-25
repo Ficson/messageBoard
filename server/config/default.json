@@ -1,0 +1,11 @@
+{
+	"config_name" : "develop",
+	"db_config" : {
+		"protocol" : "mysql",
+		"host" : "localhost",
+		"database" : "message-board",
+		"user" : "root",
+		"password" : "123456",
+		"port" : 3306
+	}
+}
