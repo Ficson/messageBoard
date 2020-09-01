@@ -76,7 +76,7 @@ router.post("/delete",
 )
 
 // 查询列表
-router.get("/getAllMessage",
+router.post("/getMessageList",
 	// 验证参数
 	// function(req,res,next) {
 		// 参数验证
@@ -88,7 +88,9 @@ router.get("/getAllMessage",
 	function(req,res,next) {
 		var conditions = {
 			"pagenum" : req.body.pagenum || 1,
-			"pagesize" : req.body.pagesize || 10
+			"pagesize" : req.body.pagesize || 10,
+			"user_id": req.body.user_id,
+			"category_id": req.body.category_id
 		};
 
 		msgServ.getAllMessage(

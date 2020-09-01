@@ -1,12 +1,11 @@
 {
   "name": "message-borad",
+  "description": "A message board for practising",
   "version": "1.0.0",
   "main": "app.js",
-  "directories": {
-    "start": "node app.js"
-  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js"
   },
   "author": "ficson",
   "license": "ISC",

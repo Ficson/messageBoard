@@ -12,7 +12,7 @@ var path = require("path");
 function initialize(app,callback) {
 
 	// 加载配置文件
-	var config = require('config').get("db_config");
+	var config = require("config").get("db_config");
 	
 	// 从配置中获取数据库配置
 	var opts = {

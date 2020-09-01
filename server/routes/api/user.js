@@ -17,7 +17,8 @@ router.post("/register", function(req, res, next) {
 	function (req, res, next) {
 		userServ.createUser(req.body, function(err, user) {
 			if (err) return res.sendResult(null, 400, err)
-			res.sendResult(user, 201, '创建成功')
+			// res.sendResult(user, 201, '创建成功')
+			login(req.body)
 		})
 	}
 )
@@ -33,16 +34,27 @@ router.post('/login',
 		if(!params.password) {
 			return res.sendResult(null,400,"密码不能为空");
 		}
-		userServ.login(params.username, params.password, function(err,user){
-				console.log(user)
-				if(err) return res.sendResult(null,400,err);
-				// 存储session
-				req.session.user = {
-					"id": user.id,
-					"username": user.username
-				}
-				res.sendResult(user,200,"登录成功");
-			});
+		login(params)
+})
+
+function login (params) {
+	userServ.login(params.username, params.password, function(err,user){
+		console.log(user)
+		if(err) return res.sendResult(null,400,err);
+		// 存储session
+		req.session.user = {
+			"id": user.id,
+			"username": user.username
+		}
+		res.sendResult(user,200,"登录成功");
+	});
+}
+
+// 登录
+router.get('/logout', 
+	function (req, res, next) {
+		req.session.user = ''
+		res.sendResult(null,200,"登出成功");
 })
 
 // 删除用户
