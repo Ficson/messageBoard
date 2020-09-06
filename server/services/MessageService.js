@@ -19,7 +19,8 @@ module.exports.createMessage = function(params, cb) {
       "user_id": params.user_id,
       "category_id": params.category_id,
       "create_time": moment(new Date()).format('YYYY-MM-DD HH:mm:ss'),
-      "update_time": moment(new Date()).format('YYYY-MM-DD HH:mm:ss')
+      "update_time": moment(new Date()).format('YYYY-MM-DD HH:mm:ss'),
+      "like": 0,
     }, function (err, message) {
       if(err) return cb("创建失败");
       result = {
@@ -28,7 +29,8 @@ module.exports.createMessage = function(params, cb) {
         "user_id": message.user_id,
         "category_id": message.category_id,
         "create_time":message.create_time,
-        "update_time": message.update_time
+        "update_time": message.update_time,
+        "like": 0
       };
       cb(null,result);
     })

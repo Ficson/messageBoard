@@ -7,7 +7,8 @@ module.exports = function(db, callback) {
    content: String,
    user_id: Number,
   create_time: String,
-  update_time: String
+  update_time: String,
+  likes: Number
   }, {
     table: "message"
   })

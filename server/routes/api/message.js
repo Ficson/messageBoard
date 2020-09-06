@@ -18,13 +18,14 @@ router.post("/create",
   next()
 },
 	function (req, res, next) {
-		params = {
-      "user_id": req.session.user.id,
-      "title": req.body.title,
-			"content": req.body.content,
-			"category_id": req.body.category_id
-		}
-		msgServ.createMessage(params, function(err, message) {
+		// params = {
+    //   "user_id": req.session.user.id,
+    //   "title": req.body.title,
+		// 	"content": req.body.content,
+		// 	"category_id": req.body.category_id
+		// }
+		msgServ.createMessage(Object.assign(req.params, {user_id: req.session.user.id}), 
+			function(err, message) {
 			if (err) return res.sendResult(null, 400, err)
 			res.sendResult(message, 201, '创建成功')
 		})
@@ -76,7 +77,7 @@ router.post("/delete",
 )
 
 // 查询列表
-router.post("/getMessageList",
+router.post("/list",
 	// 验证参数
 	// function(req,res,next) {
 		// 参数验证

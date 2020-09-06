@@ -18,7 +18,7 @@ router.post("/register", function(req, res, next) {
 		userServ.createUser(req.body, function(err, user) {
 			if (err) return res.sendResult(null, 400, err)
 			// res.sendResult(user, 201, '创建成功')
-			login(req.body)
+			login(req, res, req.body)
 		})
 	}
 )
@@ -34,10 +34,10 @@ router.post('/login',
 		if(!params.password) {
 			return res.sendResult(null,400,"密码不能为空");
 		}
-		login(params)
+		login(req, res, params)
 })
 
-function login (params) {
+function login (req, res, params) {
 	userServ.login(params.username, params.password, function(err,user){
 		console.log(user)
 		if(err) return res.sendResult(null,400,err);

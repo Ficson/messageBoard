@@ -8,7 +8,7 @@ import Vue from 'vue'
 let _this = Vue.prototype
 
 // 路由白名单
-const whiteList = ['/login', '/404']
+const whiteList = ['/login', '/404', '/home']
 
 // 路由跳转
 router.beforeEach((to, from, next) => {

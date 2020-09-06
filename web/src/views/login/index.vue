@@ -1,6 +1,5 @@
 <template>
   <div class="login-container">
-    登录
     <form class="login-frame" v-if="type===1">
       <header>用户登录</header>
       <div class="form-item">

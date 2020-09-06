@@ -147,6 +147,11 @@ export const baseRoutes = [
     hidden: true
   },
   {
+    path: '/home',
+    component: () => import('@/views/home/index'),
+    hidden: true
+  },
+  {
     path: '/404',
     component: () => import('@/views/err/404'),
     hidden: true

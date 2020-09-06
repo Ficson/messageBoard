@@ -5,7 +5,7 @@ module.exports = function(req, res, next){
 		if(fmt == "rest") {
 			res.json(
 			{
-				"data" : data, 
+				"model" : data, 
 				"msg" 		: message,
 				"retCode" 	: code
 			});
