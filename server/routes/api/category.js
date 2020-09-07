@@ -10,6 +10,9 @@ router.post("/create",
 	if(!req.body.name){
 		return res.sendResult(null,400,"模块名不能为空");
   }
+  if(!req.userInfo.rid !== 1){
+		return res.sendResult(null,400,"非管理员，无权限");
+  }
   next()
 },
 	function (req, res, next) {

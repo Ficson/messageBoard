@@ -8,8 +8,9 @@ module.exports = function(db, callback) {
     tel: String,
     email: String,
     birthday: String,
+    role_id: Number,
     create_time: String,
-    update_time: String
+    update_time: String,
   }, {
     table: "user"
   })

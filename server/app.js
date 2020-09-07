@@ -29,6 +29,8 @@ database.initialize(app, function (err) {
  * 
  */
 
+var userService = require(path.join(process.cwd(),"services/userService"));
+
 app.all('/api/*', function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*"),
   res.header("Access-Controld-Allow-Headers", "X-Requested-With, mytoken")
@@ -50,11 +52,24 @@ var resextra = require('./modules/resextra')
 app.use(resextra)
 
 
+// 初始化 后台登录 passport 策略
+admin_passport = require('./modules/passport');
+user = require('./routes/api/user')
+// 设置登录模块的登录函数衔接 passport 策略
+admin_passport.setup(app,userService.login);
+// 设置 passport 登录入口点
+app.use("/api/user/register",user.register); // 注册
+// app.use("/api/user/logout",user.logout); // 退出
+app.use("/api/user/login",admin_passport.login);
+// 设置 passport 验证路径
+app.use("/api/*",admin_passport.tokenAuth);
+
+
 // session配置
 app.use(session({
   // 配置加密字符串，它会在原有加密基础之上和这个字符串拼起来去加密
   // 目的是为了增加安全性，防止客户端恶意伪造
-  secret: 'itcast',
+  secret: 'message',
   resave: false,
   saveUninitialized: false // 无论你是否使用 Session ，我都默认直接给你分配一把钥匙
 }))

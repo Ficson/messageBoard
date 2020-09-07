@@ -6,9 +6,7 @@ var msgServ = require(path.join(process.cwd(),"/services/MessageService"))
 // 添加
 router.post("/create", 
   function(req, res, next) {
-  if (!req.session.user) {
-    return res.sendResult(null,400,"登录失效");
-  } else if(!req.body.title){
+  if(!req.body.title){
 		return res.sendResult(null,400,"标题不能为空");
   } else if(!req.body.content){
 		return res.sendResult(null,400,"内容不能为空");
@@ -35,9 +33,7 @@ router.post("/create",
 // 更新
 router.post("/update", 
 	function(req, res, next) {
-		if (!req.session.user) {
-			return res.sendResult(null,400,"登录失效");
-		} else if(!req.body.id){
+		if(!req.body.id){
       return res.sendResult(null,400,"id不能为空");
     }
 		msgServ.updateMessage(
@@ -60,10 +56,7 @@ router.post("/update",
 router.post("/delete", 
 // 验证参数
 	function(req, res, next) {
-		if (!req.session.user) {
-			return res.sendResult(null,400,"登录失效");
-		}
-		else if (!req.body.id) return res.sendResult(null, 400, "留言ID不能为空")
+		if (!req.body.id) return res.sendResult(null, 400, "留言ID不能为空")
 		if (isNaN(parseInt(req.body.id))) return res.sendResult(null, 400, "ID必须要是数字")
 		next()
 	},
