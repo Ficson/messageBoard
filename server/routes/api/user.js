@@ -75,7 +75,7 @@ router.post("/delete",
 router.post("/update", 
 	function(req, res, next) {
 		userServ.updateUser(
-			Object.assign(req.body, { id: req.session.user.id}),
+			Object.assign(req.body, { id: req.userInfo.uid}),
 			function(err,user) {
 				if(err) return res.sendResult(null,400,err);
 				res.sendResult(user,200,"更新成功");
@@ -92,8 +92,7 @@ router.post("/updatePassword", function (req, res, next) {
 	}
 	userServ.updatePassword(
 		{
-			"id": req.session.user.id,
-			"username": req.session.user.username,
+			"id": req.userInfo.uid,
 			"oldPassword": req.body.oldPassword,
 			"newPassword": req.body.newPassword
 		}, function (err, user) {

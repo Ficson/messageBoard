@@ -17,12 +17,12 @@ router.post("/create",
 },
 	function (req, res, next) {
 		// params = {
-    //   "user_id": req.session.user.id,
+    //   "user_id": req.userInfo.uid,
     //   "title": req.body.title,
 		// 	"content": req.body.content,
 		// 	"category_id": req.body.category_id
 		// }
-		msgServ.createMessage(Object.assign(req.params, {user_id: req.session.user.id}), 
+		msgServ.createMessage(Object.assign(req.params, {user_id: req.userInfo.uid}), 
 			function(err, message) {
 			if (err) return res.sendResult(null, 400, err)
 			res.sendResult(message, 201, '创建成功')
@@ -38,13 +38,13 @@ router.post("/update",
     }
 		msgServ.updateMessage(
 			// {
-      //   "user_id": req.session.user.id,
+      //   "user_id": req.userInfo.uid,
       //   "id": req.body.id,
       //   "title": req.body.title,
 			// 	"content": req.body.content,
 			// 	"category_id": req.body.category_id
 			// },
-			Object.assign(req.body, { "user_id": req.session.user.id}),
+			Object.assign(req.body, { "user_id": req.userInfo.uid}),
 			function(err,message) {
 				if(err) return res.sendResult(null,400,err);
 				res.sendResult(message,200,"更新成功");
@@ -62,7 +62,7 @@ router.post("/delete",
 	},
 	// 处理业务逻辑
 	function(req, res, next) {
-		msgServ.deleteMessage({"id": req.body.id, "user_id": req.session.user.id},function(err) {
+		msgServ.deleteMessage({"id": req.body.id, "user_id": req.userInfo.uid},function(err) {
 			if(err) return res.sendResult(null,400,err);
 			res.sendResult(null,200,"删除成功");
 		})

@@ -27,7 +27,7 @@ request.interceptors.response.use (
   response => {
     console.log(response)
     const {status, data: {retCode, msg, model}} = response;
-    if (status !== 200 || +retCode !== 200) {
+    if (status !== 200 || (/^2/.test(retCode+''))) {
       errCodeHandle (retCode, msg);
       return Promise.reject ({retCode, msg});
     }
@@ -47,7 +47,7 @@ request.interceptors.response.use (
 
 // 错误码处理
 const errCodeHandle = (retCode = '', msg = '') => {
-  if (retCode.toString () === '20003') {
+  if (retCode.toString () === '401') {
     // 此处的20003是未登录的状态码
     if (_this.$utils.getLocalStorage ('adminToken')) {
       MessageBox.alert ('请重新登录', '登录无效', {

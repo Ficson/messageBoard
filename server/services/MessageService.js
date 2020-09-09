@@ -35,7 +35,6 @@ module.exports.createMessage = function(params, cb) {
       cb(null,result);
     })
   })
-  
 }
 
 //  更新留言
