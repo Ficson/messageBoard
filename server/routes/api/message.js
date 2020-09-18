@@ -6,44 +6,45 @@ var msgServ = require(path.join(process.cwd(),"/services/MessageService"))
 // 添加
 router.post("/create", 
   function(req, res, next) {
-  if(!req.body.title){
-		return res.sendResult(null,400,"标题不能为空");
-  } else if(!req.body.content){
-		return res.sendResult(null,400,"内容不能为空");
-  } else if (!req.body.category_id) {
-		return res.sendResult(null,400,"模块不能为空"); 
-	}
-  next()
-},
-	function (req, res, next) {
-		// params = {
-    //   "user_id": req.userInfo.uid,
-    //   "title": req.body.title,
-		// 	"content": req.body.content,
-		// 	"category_id": req.body.category_id
-		// }
-		msgServ.createMessage(Object.assign(req.params, {user_id: req.userInfo.uid}), 
+	// 留言
+	req.body.user_id = req.userInfo.uid
+	if (parseInt(req.body.type) === 0) { 
+		if(!req.body.content){
+			return res.sendResult(null,400,"内容不能为空");
+		} else if (!req.body.category_id) {
+			return res.sendResult(null,400,"模块不能为空"); 
+		}
+		msgServ.createMessage(Object.assign(req.body, {user_id: req.userInfo.uid}), 
+			function(err, message) {
+			if (err) return res.sendResult(null, 400, err)
+			res.sendResult(message, 201, '创建成功')
+		})
+	// 回复
+	} else if (parseInt(req.body.type) === 1) { 
+		if (!req.body.content) {
+			return res.sendResult(null,400,"内容不能为空");
+		} else if (!req.body.pid) {
+			return res.sendResult(null,400,"留言id不能为空");
+		}
+		msgServ.createReply(Object.assign(req.body, {user_id: req.userInfo.uid}), 
 			function(err, message) {
 			if (err) return res.sendResult(null, 400, err)
 			res.sendResult(message, 201, '创建成功')
 		})
 	}
-)
+})
 
 // 更新
 router.post("/update", 
 	function(req, res, next) {
 		if(!req.body.id){
-      return res.sendResult(null,400,"id不能为空");
-    }
+      return res.sendResult(null,400,"留言id不能为空");
+    } else if (!req.body.content) {
+			return res.sendResult(null,400,"内容不能为空");
+		} else if (!req.body.category_id) {
+			return res.sendResult(null,400,"模块不能为空"); 
+		}
 		msgServ.updateMessage(
-			// {
-      //   "user_id": req.userInfo.uid,
-      //   "id": req.body.id,
-      //   "title": req.body.title,
-			// 	"content": req.body.content,
-			// 	"category_id": req.body.category_id
-			// },
 			Object.assign(req.body, { "user_id": req.userInfo.uid}),
 			function(err,message) {
 				if(err) return res.sendResult(null,400,err);
@@ -57,12 +58,11 @@ router.post("/delete",
 // 验证参数
 	function(req, res, next) {
 		if (!req.body.id) return res.sendResult(null, 400, "留言ID不能为空")
-		if (isNaN(parseInt(req.body.id))) return res.sendResult(null, 400, "ID必须要是数字")
 		next()
 	},
 	// 处理业务逻辑
 	function(req, res, next) {
-		msgServ.deleteMessage({"id": req.body.id, "user_id": req.userInfo.uid},function(err) {
+		msgServ.deleteMessage({"id": req.body.id, "user_id": req.userInfo.uid },function(err) {
 			if(err) return res.sendResult(null,400,err);
 			res.sendResult(null,200,"删除成功");
 		})
@@ -70,32 +70,23 @@ router.post("/delete",
 )
 
 // 查询列表
-router.post("/list",
-	// 验证参数
-	// function(req,res,next) {
-		// 参数验证
-		// if(!req.body.pagenum || req.body.pagenum <= 0) return res.sendResult(null,400,"pagenum 参数错误");
-		// if(!req.body.pagesize || req.body.pagesize <= 0) return res.sendResult(null,400,"pagesize 参数错误"); 
-		// next();
-	// },
-	// 业务逻辑
-	function(req,res,next) {
-		var conditions = {
-			"pagenum" : req.body.pagenum || 1,
-			"pagesize" : req.body.pagesize || 10,
-			"user_id": req.body.user_id,
-			"category_id": req.body.category_id
-		};
+router.list = function(req,res,next) {
+	var conditions = {
+		"pagenum" : req.body.pagenum || 0,
+		"pagesize" : req.body.pagesize || 10,
+		// "user_id": req.userInfo.user_id,
+		"category_id": req.body.category_id,
+		"content": req.body.content 
+	};
 
-		msgServ.getAllMessage(
-			conditions,
-			function(err,result){
-				if(err) return res.sendResult(null,400,err);
-				res.sendResult(result,200,"获取成功");
-			}
-		);
-	}
-);
+	msgServ.getAllMessages(
+		conditions,
+		function(err,result){
+			if(err) return res.sendResult(null,400,err);
+			res.sendResult(result,200,"获取成功");
+		}
+	);
+}
 
 // 查询单条留言
 router.post("/findMessageById",
@@ -104,7 +95,6 @@ router.post("/findMessageById",
 		if(!req.body.id) {
 			return res.sendResult(null,400,"留言ID不能为空");
 		}
-		if(isNaN(parseInt(req.body.id))) return res.sendResult(null,400,"商品ID必须是数字");
 		next();
 	},
 	// 业务逻辑

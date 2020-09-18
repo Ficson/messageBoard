@@ -1,0 +1,190 @@
+/* é‡ç½®æµè§ˆå™¨æ ·å¼ */
+body,
+ul,
+ol,
+li,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+form,
+input,
+textarea,
+p,
+button,
+article,
+aside,
+details,
+figure,
+footer,
+header,
+menu,
+nav,
+i,
+select,
+option,
+section,
+content,
+main,
+div,
+a,
+img,
+table,
+tbody,
+thead,
+tr,
+td,
+td {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
+/* è§£å†³è¯­ä¹‰åŒ–æ ‡ç­¾åœ¨ä½Žç‰ˆæœ¬IEä¸‹æ¸²æŸ“ä¸ºè¡Œå†…å…ƒç´  */
+header,
+nav,
+article,
+section,
+content,
+aside,
+footer,
+details,
+figcaption,
+figure,
+hgroup,
+menu,
+main {
+  display: block;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: normal;
+}
+
+html,
+body {
+  height: 100%;
+  width: 100%;
+}
+
+html {
+  line-height: 1.15;
+  /* è§£å†³IOSé»˜è®¤æ»‘åŠ¨å¾ˆå¡çš„æƒ…å†µ */
+  -webkit-overflow-scrolling: touch;
+}
+
+body {
+  color: #3c3c3c;
+  font-size: 14px;
+  font-family: 'Helvetica Neue', Helvetica, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei',
+    å¾®è½¯é›…é»‘, Arial, sans-serif;
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
+}
+
+ul,
+li {
+  list-style-type: none;
+}
+
+a {
+  text-decoration: none;
+  outline: 0;
+  color: #333;
+}
+
+button,
+input[type='button'],
+select {
+  cursor: pointer;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-appearance: none;
+}
+
+img,
+button {
+  border: 0;
+}
+
+input,
+select,
+option {
+  outline: 0;
+}
+
+input,
+textarea {
+  outline: 0;
+  background-color: transparent;
+  -moz-appearance: none;
+  -webkit-appearance: none;
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+/* æ¸…é™¤input[type=number]çš„é»˜è®¤æ ·å¼ */
+input[type='number'] {
+  -moz-appearance: textfield;
+}
+input[type='number']::-webkit-inner-spin-button,
+input[type='number']::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+/* è¾“å…¥æ¡† placeholder æ ·å¼ä¼˜åŒ– */
+input::-webkit-input-placeholder,
+textarea::-webkit-input-placeholder {
+  color: #a6a6a6;
+  font-size: 14px;
+}
+input::-moz-placeholder,
+textarea::-moz-placeholder {
+  color: #a6a6a6;
+  font-size: 14px;
+}
+input:-ms-input-placeholder,
+textarea:-ms-input-placeholder {
+  color: #a6a6a6;
+  font-size: 14px;
+}
+input::placeholder,
+textarea::placeholder {
+  color: #a6a6a6;
+  font-size: 14px;
+}
+
+/* æ»šåŠ¨æ¡æ ·å¼ä¼˜åŒ– */
+::-webkit-scrollbar,
+::-webkit-scrollbar {
+  width: 9px;
+  height: 9px;
+}
+::-webkit-scrollbar-track,
+::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.06);
+  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.08);
+}
+::-webkit-scrollbar-thumb,
+::-webkit-scrollbar-thumb {
+  background-color: #eaeaea;
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.2);
+  border-radius: 20px;
+  -webkit-border-radius: 20px;
+  -moz-border-radius: 20px;
+  -ms-border-radius: 20px;
+  -o-border-radius: 20px;
+}

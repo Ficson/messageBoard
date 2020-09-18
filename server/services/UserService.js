@@ -33,7 +33,7 @@ module.exports.createUser = function(params,cb) {
 			"create_time": moment(new Date()).format('YYYY-MM-DD HH:mm:ss'),
 			"update_time": moment(new Date()).format('YYYY-MM-DD HH:mm:ss')
 		},function(err,user){
-			if(err) return cb("创建失败");
+			if(err) return cb(err);
 			result = {
 				"id" : user.mg_id,
 				"username" : user.username,
@@ -115,7 +115,7 @@ module.exports.updateUser = function(params, cb) {
  */
 module.exports.deleteUser = function(id, cb) {
 	userDAO.destroy(id, function(err) {
-		if (err) return cb("删除失败")
+		if (err) return cb(err)
 		cb(null)
 	})
 }

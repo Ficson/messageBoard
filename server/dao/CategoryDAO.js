@@ -61,7 +61,7 @@ module.exports.exists = function(name,cb) {
 	var db = databaseModule.getDatabase();
 	var Model = db.models.CategoryModel;
 	Model.exists({"name":name},function(err,isExists){
-		if(err) return cb("查询失败");
+		if(err) return cb(err);
 		 cb(null,isExists);
 	});
 }
@@ -77,7 +77,7 @@ module.exports.existsById = function(category_id,cb) {
 	var db = databaseModule.getDatabase();
 	var Model = db.models.CategoryModel;
 	Model.exists({"id":category_id},function(err,isExists){
-		if(err) return cb("查询失败");
+		if(err) return cb(err);
 		 cb(null,isExists);
 	});
 }

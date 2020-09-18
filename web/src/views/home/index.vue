@@ -1,10 +1,14 @@
 <template>
   <div class="home">
+    <div class="banner">
+      <div>隐秘的留言板</div>
+    </div>
     <header>
       <nav>
         <div class="left">
-          <i class="el-icon-document"></i>
-          <el-input placeholder="Search" style="width:200px;"></el-input>
+          <!-- <i class="el-icon-document"></i> -->
+          <el-input placeholder="输入关键字搜索" style="width:200px;" v-model="keyword"></el-input>
+          <el-button type="primary" icon="el-icon-search" class="search" @click="search">搜索</el-button>
         </div>
         <div class="right">
           <el-button type="primary" plain>我要留言</el-button>
@@ -14,26 +18,40 @@
     </header>
     <main>
       <ul>
-        <li v-for="(item, index) in messages">
-          <div class="msg-top">
-            <img :src="item.avatar" alt="">
-            <span>{{item.name}}</span>
-            <time>{{item.createTime}}</time>
-          </div>
-          <div class="msg-bottom">
-            <p>{{item.title}}</p>
-            <div class="praise">
-              <img src='@/assets/images/praise.png' alt="">
-              <span>{{item.likes}}</span>
+        <li v-for="(msg, index) in messages" class="msg-wrapper">
+          <div class="item">
+            <img :src="msg.avatar" alt="">
+            <div class="right">
+              <p>{{msg.username}}</p>
+              <div class="content" v-html="msg.content"></div>
+              <div class="info">
+                <time>{{msg.create_time}}</time>
+                <span class="praise">赞({{msg.likes}})</span>
+                <span class="reply">回复</span>
+              </div>
             </div>
           </div>
+          <ul class="comment-wrapper">
+            <li class="item comment" v-for="(item, index) in msg.children">
+              <img :src="item.avatar" alt="">
+              <div class="right">
+                <p>{{item.username}}</p>
+                <div class="content" v-html="item.content"></div>
+                <div class="info">
+                  <time>{{item.create_time}}</time>
+                  <span class="praise">赞({{item.likes}})</span>
+                  <span class="reply">回复</span>
+                </div>
+              </div>
+            </li>
+          </ul>
         </li>
       </ul>
-      <div class="backtop">
-        <i class="el-icon-arrow-up"></i>
-        回到顶部
-      </div>
     </main>
+    <div class="backtop">
+      <i class="el-icon-arrow-up"></i>
+      回到顶部
+    </div>
   </div>
 </template>
 
@@ -43,42 +61,19 @@ export default {
 
   data() {
     return {
-      messages: [
-        // {
-        //   name: 'Nick',
-        //   avatar: 'https://avatar-static.segmentfault.com/424/432/4244320254-5f4d198745ac3_huge256',
-        //   createTime: '2020-09-01 16:51:08',
-        //   title: '你是不是脑袋被门挤了',
-        //   likes: 4,
-        // },
-        // {
-        //   name: 'Nick',
-        //   avatar: 'https://avatar-static.segmentfault.com/424/432/4244320254-5f4d198745ac3_huge256',
-        //   createTime: '2020-09-01 16:51:08',
-        //   title: '你是不是脑袋被门挤了',
-        //   likes: 4,
-        // },
-        // {
-        //   name: 'Nick',
-        //   avatar: 'https://avatar-static.segmentfault.com/424/432/4244320254-5f4d198745ac3_huge256',
-        //   createTime: '2020-09-01 16:51:08',
-        //   title: '你是不是脑袋被门挤了',
-        //   likes: 4,
-        // },
-        // {
-        //   name: 'Nick',
-        //   avatar: 'https://avatar-static.segmentfault.com/424/432/4244320254-5f4d198745ac3_huge256',
-        //   createTime: '2020-09-01 16:51:08',
-        //   title: '你是不是脑袋被门挤了',
-        //   likes: 4,
-        // }
-      ]
+      messages: [],
+      keyword: ''
     };
   },
   methods: {
-    async init() {
-      let res = await this.$allRequest.getMessageList()
-      this.messages = res.result
+    async init(keyword) {
+      let res = await this.$allRequest.getMessageList({
+        content: keyword || ''
+      })
+      this.messages = res.list
+    },
+    search() {
+      this.init(this.keyword)
     }
   },
   created() {
@@ -88,22 +83,45 @@ export default {
 </script>
 
 <style lang='scss'>
+body{
+  background: rgb(241, 244, 249);
+}
 .home {
+  .banner{
+    background: url("./../../assets/images/banner.jpg");
+    height: 500px;
+    width: 100%;
+    position: relative;
+    div{
+     height: 500px;
+      width: 100%;
+      position: absolute;
+      color: #fff;
+      text-align: center;
+      font-size: 93px;
+      padding-top: 161px;
+      background: linear-gradient(230deg,rgba(53,57,74,0),#828282);
+    }
+  }
   header{
     height: 60px;
-    background-color: #f8f8f8;
+    // background-color: #f8f8f8;
     border-color: #e7e7e7;
     nav{
       display: flex;
       justify-content: space-between;
       margin: 0 auto;
       width: 1200px;
-      padding: 10px;
+      padding: 10px 0px;
       .left{
-        i{
-          font-size: 30px;
-          margin-right: 10px;
-          vertical-align: middle;
+        // i{
+        //   font-size: 30px;
+        //   margin-right: 10px;
+        //   vertical-align: middle;
+        // }
+        .search{
+          // font-size: 10px;
+          margin-left: 10px;
         }
       }
       .right{
@@ -113,46 +131,57 @@ export default {
   }
   main{
     margin: 0 auto;
-    width: 900px;
-    ul{
-      padding: 0;
-      li{
-        .msg-top{
-          color: #8E94AC;
-          img{
-            width: 40px;
-            height: 40px;
-            border-radius: 30em;
-            margin-right: 10px;
-            vertical-align: middle;
-          }
-          span{
-            margin-right: 10px;
-          }
+    width: 1200px;
+    background: #fff;
+    border-radius: 9px;
+    padding: 10px 0;
+    box-shadow: 0px 0px 12px 0px #e5e3e3;
+    >ul{
+      margin-left: 10px;
+      .msg-wrapper{
+        margin: 13px 0 30px 40px;
+      }
+      .item{
+        display: flex;
+        color: rgb(142, 148, 172);
+        margin-bottom: 20px;
+        img{
+          width: 56px;
+          height: 56px;
+          border-radius: 50%;
+          margin-right: 11px;
         }
-        .msg-bottom{
-          cursor: pointer;
-          background: #F7F8FA;
-          display: flex;
-          justify-content: space-between;
-          margin: 10px 0;
-          padding: 0 22px;
-          align-items: center;
+        .right{
           p{
-           font-size: 19px;
-          font-weight: bold;
+            margin-bottom: 5px;
           }
-          .praise{
-            img{
-              margin-left: 10px;
-              margin-bottom: 10px;
-              vertical-align: middle;
+          .content{
+            margin-bottom: 5px;
+            color: #000;
+          }
+          .info{
+            time{
+              margin-right: 10px;
             }
-            span{
-              vertical-align: middle;
+            .praise{
+              background: url("./../../assets/images/praise.png") left -7px no-repeat;
+              padding: 1.5px 0px 0 22px;
+              margin-right: 10px;
+              cursor: pointer;
+              &:hover{
+
+              }
+            }
+            .reply{
+              background: url("./../../assets/images/reply.png") left 2px no-repeat;
+              padding: 1.5px 0px 0 22px;
+              cursor: pointer;
             }
           }
         }
+      }
+      .comment-wrapper{
+        margin-left: 40px;
       }
     }
   }

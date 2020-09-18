@@ -28,7 +28,7 @@ Vue.use(Element, {
 
 Vue.config.productionTip = false
 console.log('环境是： ' + process.env.NODE_ENV)
-if (process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'proxy') require('./mock')
+// if (process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'proxy') require('./mock')
 
 new Vue({
   router,

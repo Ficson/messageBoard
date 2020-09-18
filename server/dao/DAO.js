@@ -84,7 +84,7 @@ module.exports.list = function(modelName,conditions,cb) {
 		
 		if(err) {
 			console.log(err);
-			return cb("查询失败",null);
+			return cb(err,null);
 		}
 		cb(null,models);
 	});
@@ -99,7 +99,7 @@ module.exports.countByConditions = function(modelName,conditions,cb) {
 
 	var resultCB = function(err,count){
 		if(err) {
-			return cb("查询失败",null);
+			return cb(err,null);
 		}
 		cb(null,count);
 	}
@@ -135,7 +135,7 @@ module.exports.findOne = function(modelName,conditions,cb) {
 	Model.one(conditions,function(err,obj){
 		logger.debug(err);
 		if(err) {
-			return cb("查询失败",null);
+			return cb(err,null);
 		}
 		return cb(null,obj);
 	});
@@ -153,7 +153,7 @@ module.exports.update = function(modelName,id,updateObj,cb) {
 	var db = databaseModule.getDatabase();
 	var Model = db.models[modelName];
 	Model.get(id,function(err,obj){
-		if(err) return cb("更新失败",null);
+		if(err) return cb(err,null);
 		obj.save(updateObj,cb);
 	});
 }
@@ -185,7 +185,7 @@ module.exports.destroy = function(modelName,id,cb) {
 	Model.get(id,function(err,obj){
 		if(err) return cb("无模型ID");
 		obj.remove(function(err) {
-			if(err) return cb("删除失败");
+			if(err) return cb(err);
 			return cb(null);
 		});
 	});
@@ -214,7 +214,7 @@ module.exports.exists = function(modelName,conditions,cb) {
 	var db = databaseModule.getDatabase();
 	var Model = db.models[modelName];
 	Model.exists(conditions,function(err,isExists){
-		if(err) return cb("查询失败");
+		if(err) return cb(err);
 		 cb(null,isExists);
 	});
 }

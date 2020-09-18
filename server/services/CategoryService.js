@@ -17,7 +17,7 @@ module.exports.createCategory = function(params, cb) {
 			"create_time": moment(new Date()).format('YYYY-MM-DD HH:mm:ss'),
 			"update_time": moment(new Date()).format('YYYY-MM-DD HH:mm:ss')
     }, function (err, category) {
-      if(err) return cb("创建失败");
+      if(err) return cb(err);
 			result = {
 				"id" : category.id,
 				"name" : category.name,
@@ -52,7 +52,7 @@ module.exports.updateCategory = function(params, cb) {
 // 模块列表
 module.exports.getAllCategorys = function(cb) {
   dao.list("CategoryModel",{},function(err,categories) {
-		if(err) return cb("获取失败");
+		if(err) return cb(err);
 		cb(null,categories);
 	});
 }
@@ -61,7 +61,7 @@ module.exports.getAllCategorys = function(cb) {
 // 删除模块
 module.exports.deleteCategory = function(id, cb) {
 	categoryDAO.destroy(id, function(err) {
-		if (err) return cb("删除失败")
+		if (err) return cb(err)
 		cb(null)
 	})
 }

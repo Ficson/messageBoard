@@ -55,8 +55,8 @@ module.exports.findPage = function(key, offset, limit, cb) {
     database.driver.execQuery(
       sql
       ,["%" + key + "%", offset, limit, function(err, users) {
-        if (err) return db("查询执行出错")
-        db(null, users)
+        if (err) return cb("查询执行出错")
+        cb(null, users)
       }]
     )
   } else {
@@ -122,7 +122,7 @@ module.exports.exists = function(username,cb) {
 	var db = databaseModule.getDatabase();
 	var Model = db.models.UserModel;
 	Model.exists({"username":username},function(err,isExists){
-		if(err) return cb("查询失败");
+		if(err) return cb(err);
 		 cb(null,isExists);
 	});
 }

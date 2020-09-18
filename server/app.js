@@ -55,12 +55,15 @@ app.use(resextra)
 // 初始化 后台登录 passport 策略
 admin_passport = require('./modules/passport');
 user = require('./routes/api/user')
+message = require('./routes/api/message')
 // 设置登录模块的登录函数衔接 passport 策略
 admin_passport.setup(app,userService.login);
 // 设置 passport 登录入口点
 app.use("/api/user/register",user.register); // 注册
+app.use("/api/message/list",message.list); // 查询留言
 // app.use("/api/user/logout",user.logout); // 退出
 app.use("/api/user/login",admin_passport.login);
+
 // 设置 passport 验证路径
 app.use("/api/*",admin_passport.tokenAuth);
 
