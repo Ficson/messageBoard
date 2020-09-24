@@ -24,12 +24,12 @@ const actions = {
         username: username.trim(),
         password: password
       }).then(model => {
-        _this.$utils.setLocalStorage('adminToken', username, 1000 * 60 * 60 * +process.env.VUE_APP_LOGIN_TOKEN_EXPIRES)
+        _this.$utils.setLocalStorage('loginToken', model.token, 1000 * 60 * 60 * +process.env.VUE_APP_LOGIN_TOKEN_EXPIRES)
         resolve()
       }).catch(error => {
         reject(error)
         // 调试用的！！！！！，别提交
-        // _this.$utils.setLocalStorage('adminToken', username, 1000 * 60 * 60 * +process.env.VUE_APP_LOGIN_TOKEN_EXPIRES)
+        // _this.$utils.setLocalStorage('loginToken', username, 1000 * 60 * 60 * +process.env.VUE_APP_LOGIN_TOKEN_EXPIRES)
         // resolve()
       })
     })
@@ -43,7 +43,7 @@ const actions = {
         username: username.trim(),
         password: password
       }).then(model => {
-        _this.$utils.setLocalStorage('adminToken', username, 1000 * 60 * 60 * +process.env.VUE_APP_LOGIN_TOKEN_EXPIRES)
+        // _this.$utils.setLocalStorage('loginToken', username, 1000 * 60 * 60 * +process.env.VUE_APP_LOGIN_TOKEN_EXPIRES)
         resolve()
       }).catch(error => {
         reject(error)
@@ -55,7 +55,7 @@ const actions = {
   logout ({ commit }) {
     return new Promise((resolve, reject) => {
       request.logout().then(model => {
-        _this.$utils.removeLocalStorage('adminToken')
+        _this.$utils.removeLocalStorage('loginToken')
         _this.$utils.removeLocalStorage('userRole')
         commit('SET_ROLES', "")
         commit("SET_USER_INFO", {})

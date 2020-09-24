@@ -19,6 +19,7 @@ export default {
       isqs: api.API_LOGOUT.isqs
     })
   },
+  // 注册
   register: function (data) {
     return apost({
       url: api.API_USER_REGISTER.url,
@@ -26,7 +27,7 @@ export default {
       isqs: api.API_USER_REGISTER.isqs
     })
   },
-
+  // 更新用户
   userUpdate: function (data) {
     return apost({
       url: api.API_USER_UPDATE.url,
@@ -34,7 +35,7 @@ export default {
       isqs: api.API_USER_UPDATE.isqs
     })
   },
-
+  // 删除用户
   userDelete: function (data) {
     return apost({
       url: api.API_USER_DELETE.url,
@@ -42,23 +43,35 @@ export default {
       isqs: api.API_USER_DELETE.isqs
     })
   },
-
-  user_update_password: function (data) {
+  // 修改密码
+  userUpdatePassword: function (data) {
     return apost({
       url: api.API_USER_UPDATE_PASSWORD.url,
       data: data,
       isqs: api.API_USER_UPDATE_PASSWORD.isqs
     })
   },
-
-  // -----------------------------------
   // 获取用户信息
   getUserInfo: function () {
     return aget({
       url: api.API_GET_USERINFO.url
     })
   },
-// ---- 2.类型管理 ----------
+  // 查询用户列表
+  userList() {
+    return aget({
+      url: api.API_USER_LIST.url
+    })
+  },
+  // 根据id查找用户
+  userFindById() {
+    return apost({
+      url: api.API_USER_FIND_BY_ID.url,
+      data: data,
+      isqs: api.API_USER_FIND_BY_ID.isqs
+    })
+  },
+ // ---- 2.类型管理 ----------
  // 添加类型
   categoryAdd: function (data) {
     return apost({

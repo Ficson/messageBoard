@@ -70,6 +70,7 @@ module.exports.login = function(username,password,cb) {
 					"username":user.username,
 					"mobile":user.tel,
 					"email":user.email,
+					"role_id": user.role_id
 				}
       );
     }
@@ -140,5 +141,48 @@ module.exports.updatePassword = function(params, cb) {
 			})
 		}
 	}) 
-	
+}
+
+// 查找用户信息
+module.exports.findById = function(id, cb) {
+	userDAO.findById(id, function(err, user) {
+		if (err || !user) {
+			return cb(err)
+		} else {
+			cb(null, {
+				"info": {
+					"id": user.id,
+					"username": user.username,
+					"tel": user.tel,
+					"birthday": user.birthday,
+					"avatar": user.avatar,
+					"sex": user.sex
+				},
+				"role": user.role_id
+			})
+		}
+	}) 
+}
+// 用户列表
+module.exports.findPage = function(params, cb) {
+	userDAO.findPage(params, function(err, data) {
+		if (err) return cb(err)
+		let userDto = data.users.map(user => {
+			return {
+				"id": user.id,
+				"username": user.username,
+				"tel": user.tel,
+				"birthday": user.birthday,
+				"avatar": user.avatar,
+				"sex": user.sex,
+				"email": user.email,
+				"role_id": user.role_id,
+				"create_time": user.create_time
+			}
+		})
+		cb(null, {
+			total: data.total,
+			result: userDto
+		})
+	})
 }

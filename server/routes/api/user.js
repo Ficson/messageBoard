@@ -102,4 +102,41 @@ router.post("/updatePassword", function (req, res, next) {
 	)
 })
 
+// 更新用户
+router.get("/getUserInfo", 
+	function(req, res, next) {
+		userServ.findById(req.userInfo.uid,
+			function(err,user) {
+				if(err) return res.sendResult(null,400,err);
+				res.sendResult(user,200,"获取成功");
+			}
+		)
+})
+
+// 用户列表
+router.post("/findPage", 
+	function(req, res, next) {
+		userServ.findPage(
+			{ key: req.query.username || '',
+				pageIndex: parseInt(req.query.pageIndex) || 1,
+				pageSize: parseInt(req.query.pageSize) || 10
+			},			
+			function(err,data) {
+				if(err) return res.sendResult(null,400,err);
+				res.sendResult(data,200,"获取成功");
+			}
+		)
+})
+
+// 查找用户
+router.get("/findById", 
+	function(req, res, next) {
+		userServ.findById( req.body.id,			
+			function(err,user) {
+				if(err) return res.sendResult(null,400,err);
+				res.sendResult(user,200,"获取成功");
+			}
+		)
+})
+
 module.exports = router;

@@ -6,6 +6,7 @@ import axios from 'axios';
 import qs from 'qs';
 import NProgress from 'nprogress';
 import {MessageBox} from 'element-ui';
+import utils from '@/utils';
 import Vue from 'vue'
 let _this = Vue.prototype
 
@@ -14,11 +15,15 @@ const request = axios.create ({
   baseURL: process.env.VUE_APP_BASE_API,
   timeout: 30000,
   withCredentials: true, // 是否开启跨域请求验证
+  // token不能在这里写，这里写的话就固定死了
 });
 
 // request拦截器
 request.interceptors.request.use (
-  config => config,
+  config => {
+    config.headers.authorization = utils.getLocalStorage('loginToken')
+    return config
+   },
   error => Promise.reject (error)
 );
 
@@ -49,7 +54,7 @@ request.interceptors.response.use (
 const errCodeHandle = (retCode = '', msg = '') => {
   if (retCode.toString () === '401') {
     // 此处的20003是未登录的状态码
-    if (_this.$utils.getLocalStorage ('adminToken')) {
+    if (_this.$utils.getLocalStorage ('loginToken')) {
       MessageBox.alert ('请重新登录', '登录无效', {
         confirmButtonText: '确定',
         type: 'error',

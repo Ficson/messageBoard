@@ -14,8 +14,8 @@ const whiteList = ['/login', '/404', '/home']
 router.beforeEach((to, from, next) => {
 
   NProgress.start()
-  const hasToken = _this.$utils.getLocalStorage('adminToken')
-  // 判断storage里是否有 'adminToken'
+  const hasToken = _this.$utils.getLocalStorage('loginToken')
+  // 判断storage里是否有 'loginToken'
   if (whiteList.indexOf(to.path) !== -1) {
     next()
     NProgress.done()
@@ -26,7 +26,7 @@ router.beforeEach((to, from, next) => {
         next()
       } else {
         try {
-          // getInfo 方法：请求后端拿到用户信息，拿到该用户的权限role：1/2
+          // getInfo 方法：请求后端拿到用户信息，拿到该用户的权限role：1或者2
           store.dispatch('getInfo').then(res => {
             // 将拿到的用户权限role作为参数调用 generateRoutes 方法，该方法会返回一张路由表
             store.dispatch('generateRoutes', res.role).then(routers => {

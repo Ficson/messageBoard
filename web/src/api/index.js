@@ -7,10 +7,12 @@ export default {
   // -------1. 用户-------
   API_LOGIN: { url: '/api/user/login', type: 'post', isqs: false, }, // 登录
   API_LOGOUT: { url: '/api/user/logout', type: 'get', isqs: false, }, // 登出
-  API_GET_USERINFO: { url: '/api/admin/getUserInfo', type: 'get', }, // 获取用户信息
+  API_GET_USERINFO: { url: '/api/user/getUserInfo', type: 'get', }, // 获取用户信息
   API_USER_REGISTER: { url: '/api/user/register', type: 'post', isqs: false, }, // 用户注册
   API_USER_UPDATE: { url: '/api/user/update', type: 'post', isqs: false }, // 用户更新
   API_USER_DELETE: { url: '/api/user/delete', type: 'post', isqs: false }, // 用户删除
+  API_USER_LIST: { url: '/api/user/findPage', type: 'post', isqs: true }, // 用户列表
+  API_USER_FIND_BY_ID: { url: '/api/user/findById', type: 'post', isqs: false }, // 查找用户
   API_USER_UPDATE_PASSWORD: { url: '/api/user/updatePassword', type: 'post', isqs: false }, // 更改密码
 
   // -------2. 类型-------

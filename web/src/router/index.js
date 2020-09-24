@@ -34,14 +34,14 @@ export const menuRoutes = [
     path: '/myMessageManage',
     name: 'MyMessageManage',
     component: Layout,
-    meta: { title: '我的留言', roles: [1] },
+    meta: { title: '我的留言', roles: [1, 2] },
     alwaysShow: false,
     children: [
       {
         path: 'index',
         component: () => import('@/views/menu/MyMessages'),
         name: 'MyMessages',
-        meta: { title: '我的留言', roles: [1] }
+        meta: { title: '我的留言', roles: [1, 2] }
       }
     ]
   },

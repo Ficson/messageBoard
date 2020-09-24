@@ -58,8 +58,8 @@ export default {
 
   beforeRouteEnter (to, from, next) {
     // 清除登录信息
-    if ($utils.getLocalStorage('adminToken')) {
-      $utils.removeLocalStorage('adminToken')
+    if ($utils.getLocalStorage('loginToken')) {
+      $utils.removeLocalStorage('loginToken')
     }
     next()
   },

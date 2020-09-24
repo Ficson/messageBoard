@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     <div class="banner">
-      <div>隐秘的留言板</div>
+      <div>愉快的留言板</div>
     </div>
     <header>
       <nav>
@@ -12,7 +12,7 @@
         </div>
         <div class="right">
           <el-button type="primary" plain>我要留言</el-button>
-          <el-button plain>进入后台</el-button>
+          <el-button plain @click="$router.push('/')">进入后台</el-button>
         </div>
       </nav>
     </header>
@@ -130,7 +130,7 @@ body{
     }
   }
   main{
-    margin: 0 auto;
+    margin: 0 auto 40px;
     width: 1200px;
     background: #fff;
     border-radius: 9px;

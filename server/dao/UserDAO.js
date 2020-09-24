@@ -46,26 +46,18 @@ module.exports.findOne = function(conditions,cb) {
  * @param  {[type]}   limit  
  * @param  {Function} cb     回调函数
  */
-module.exports.findPage = function(key, offset, limit, cb) {
-  db = databaseModule.getDatabase()
-  sql = "SELECT * FROM user"
-
-  if (key) {
-    sql += " WHERE username LIKE ? LIMIT ?,?"
-    database.driver.execQuery(
-      sql
-      ,["%" + key + "%", offset, limit, function(err, users) {
+module.exports.findPage = function(conditions, cb) {
+  let key = conditions.key,
+    offset = (conditions.pageIndex-1) * conditions.pageSize,
+    limit = conditions.pageSize
+  count({ key}, function (err1, total){
+    let sql = "SELECT * FROM user WHERE username LIKE ? LIMIT ?,?"
+    database.driver.execQuery( sql ,["%" + key + "%", offset, limit], function(err, users) {
         if (err) return cb("查询执行出错")
-        cb(null, users)
-      }]
+        cb(null, { total, users })
+      }
     )
-  } else {
-    sql += " LIMIT ?,? "
-    database.driver.exeQuery(sql, [offset, limit], function(err, users) {
-      if (err) return cb("查询执行出错")
-      cb(null, user)
-    })
-  }
+ })
 }
 
 /**
@@ -106,8 +98,15 @@ module.exports.destroy = function(id, cb) {
  * 
  * @param  {Function} cb 回调函数
  */
-module.exports.count = function(cb) {
-  daoModule("UserModel", cb)
+function count (conditions, cb) {
+  let {
+    key = ''
+  } = conditions
+	sql = `SELECT count(*) as count FROM user WHERE username LIKE ?`;
+		database.driver.execQuery(sql ,["%" + key + "%"],function(err,result){
+			if(err) return cb(err);
+			cb(null,result[0]["count"]);
+		});
 }
 
 

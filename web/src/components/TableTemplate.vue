@@ -3,7 +3,7 @@
     <!-- ---------------------- 搜索条 -------------------------- -->
     <div class="search-bar" v-if="queryOpts.length > 0">
       <el-form :inline="true" size="medium">
-        <el-form-item v-for="(item, index) in queryOpts" :label="item.label" :key="index">
+        <el-form-item v-for="(item, index) in queryOpts" :label="item.label" :key="index" style="margin-left: 10px;">
 
           <el-date-picker v-if="item.type === 'date'"
             :editable="false"
@@ -216,7 +216,20 @@ export default {
 
   },
   mounted() {
+    this.initDate()
     this.loadData()
+  },
+  watch: {
+    "queryData.date": {
+      handler(val) {
+          if(val && val.length === 2) {
+          this.queryData.startTime = val[0] + ' 00:00:00';
+          this.queryData.endTimeName = val[1] + ' 23:59:59';
+        }
+        },
+        // 代表在wacth里声明了firstName这个方法之后立即先去执行handler方法
+        immediate: true
+      }
   },
   methods: {
     // tableQueryData(pageSize, pageIndex) {
@@ -234,6 +247,9 @@ export default {
     //   this.queryData = this.$utils.deepCopy(queryData);
     //   Promise.resolve().then(() => this.loadData());// 放入异步任务队列
     // },
+    // 日期初始化
+    initDate() {
+    },
     // 加载数据
     loadData(pageSize, pageIndex) {
       this.options.loading = true
@@ -246,7 +262,7 @@ export default {
         }, this.queryData)
       }).then(model => {
           this.options.loading = false
-          this.list = model.results;
+          this.list = model.result;
           this.pagination.total = model.total;
         }).finally(() => this.options.loading = false);
     },
