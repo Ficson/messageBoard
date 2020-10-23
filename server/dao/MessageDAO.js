@@ -14,7 +14,7 @@ module.exports.create = function(obj,cb) {
 
 
 /**
- * 获取留言列表
+ * 获取留言列表(作废)
  * 
  * @param  {[type]}   conditions 查询条件
  * @param  {Function} cb         回调函数
@@ -71,11 +71,12 @@ module.exports.findOne = function(conditions,cb) {
 
 module.exports.getMessages = function(query, cb) {
   // db = databaseModule.getDatabase()
-  const { pagenum = 0, pagesize = 10, category_id = '', content = ''} = query
-  count({ category_id, content, pid: -1 }, function (err1, msgCount){
+  const { pagenum = 0, pagesize = 10, category_id = '', content = '', id = ''} = query
+  count({ category_id, content, pid: -1, id }, function (err1, msgCount){
       if (err1) return cb(err1)
+      let idSql = id ? ` and m.id = ${id}` : ''
       const sqlMsg = `select m.id,m.content, m.user_id, m.likes, m.type, m.isAuthor, m.create_time, u.username, u.avatar 
-      from message as m left join user as u on m.user_id = u.id where m.content LIKE ? and m.pid=-1 order by create_time DESC limit ?, ?`
+      from message as m left join user as u on m.user_id = u.id where m.content LIKE ? and m.pid=-1` + idSql + ` order by create_time DESC limit ?, ?`
       database.driver.execQuery(sqlMsg, [`%${content}%`, pagenum * pagesize, pagesize], function(err2, resMsg) {
         if (err2) return cb(err2)
         findComments(resMsg, list =>{
@@ -115,9 +116,12 @@ function count(conditions, cb) {
   let {
     content = '',
     pid = '',
-    category_id = ''
+    category_id = '',
+    id = ''
   } = conditions
-	sql = `SELECT count(*) as count FROM message WHERE content LIKE ? and pid = ? ${category_id ? 'and category_id = ?' + category_id: '' }`;
+  let categorySql = category_id ? ` and category_id = ${category_id}` : ''
+  let idSql = id ? ` and id = ${id}` : ''
+	sql = 'SELECT count(*) as count FROM message WHERE content LIKE ? and pid = ? ' + idSql + categorySql;
 		database.driver.execQuery(sql ,["%" + content + "%", pid],function(err,result){
 			if(err) return cb(err);
 			cb(null,result[0]["count"]);

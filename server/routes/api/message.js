@@ -72,11 +72,12 @@ router.post("/delete",
 // 查询列表
 router.list = function(req,res,next) {
 	var conditions = {
-		"pagenum" : req.body.pagenum || 0,
-		"pagesize" : req.body.pagesize || 10,
+		"pagenum" : req.body.pagenum ? parseInt(req.body.pagenum-1): 0,
+		"pagesize" : req.body.pagesize ? parseInt(req.body.pagesize) : 10,
 		// "user_id": req.userInfo.user_id,
 		"category_id": req.body.category_id,
-		"content": req.body.content 
+		"content": req.body.content,
+		"id": req.body.id 
 	};
 
 	msgServ.getAllMessages(

@@ -129,7 +129,7 @@ module.exports.getAllMessages = function(conditions,cb) {
         "total": result.total,// ??
         "pagenum": conditions.pagenum,
         "pagesize": conditions.pagesize,
-        "list": result.list
+        "list": result.list,
       };
 			return cb(null,resultDta);
 		}

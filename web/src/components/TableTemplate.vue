@@ -124,7 +124,7 @@
       </el-table-column>
       <!--endregion-->
     </el-table>
-    <div style="height:12px"></div>
+    <!-- <div style="height:12px"></div> -->
     <!-- ---------------------- 表格 -------------------------- -->
     <!--region 分页-->
     <div class="table-bottom">
@@ -321,6 +321,8 @@ export default {
   }
 
   .table-bottom {
+    background: white;
+    overflow: hidden;
     .bottoms-btns {
       margin-top: 20px;
       display: inline-block;

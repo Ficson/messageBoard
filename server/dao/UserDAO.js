@@ -50,6 +50,7 @@ module.exports.findPage = function(conditions, cb) {
   let key = conditions.key,
     offset = (conditions.pageIndex-1) * conditions.pageSize,
     limit = conditions.pageSize
+    id = conditions.id || ''
   count({ key}, function (err1, total){
     let sql = "SELECT * FROM user WHERE username LIKE ? LIMIT ?,?"
     database.driver.execQuery( sql ,["%" + key + "%", offset, limit], function(err, users) {
