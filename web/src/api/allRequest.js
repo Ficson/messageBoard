@@ -140,6 +140,13 @@ export default {
       isqs: api.API_MESSAGE_FIND_MESSAGE_BY_ID.isqs
     })
   },
+  setLike: function (data) {
+    return apost({
+      url: api.API_LIKE_SET.url,
+      data: data,
+      isqs: api.API_LIKE_SET.isqs
+    })
+  },
 
   // aaaaaaaa: function (data) {
   //   return apost({

@@ -138,7 +138,7 @@ export const menuRoutes = [
 export const baseRoutes = [
   {
     path: '/',
-    redirect: '/myMessageManage',
+    redirect: '/myMessageManage/index',
     hidden: true
   },
   {

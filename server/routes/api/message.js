@@ -77,7 +77,8 @@ router.list = function(req,res,next) {
 		// "user_id": req.userInfo.user_id,
 		"category_id": req.body.category_id,
 		"content": req.body.content,
-		"id": req.body.id 
+		"owner_id": req.body.id,
+		"user_id": req.userInfo&&req.userInfo.uid ? req.userInfo.uid : '' 
 	};
 
 	msgServ.getAllMessages(

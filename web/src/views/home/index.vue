@@ -1,10 +1,10 @@
 <template>
   <div class="home">
-    <section class="banner">
+    <!-- <section class="banner">
       <div>隐秘的留言板</div>
-    </section>
+    </section> -->
     <section class="inner">
-      <header>
+      <header v-show="!editor.visible">
         <div class="left">
           <!-- <i class="el-icon-document"></i> -->
           <el-input placeholder="输入关键字搜索" style="width:200px;" v-model="keyword"></el-input>
@@ -32,21 +32,39 @@
                 <div class="content" v-html="msg.content"></div>
                 <div class="info">
                   <time>{{msg.create_time}}</time>
-                  <span class="praise">赞({{msg.likes}})</span>
-                  <span class="reply">回复</span>
+                  <span class="praise"
+                    :style="{backgroundImage: 'url(' + (msg.liked ? likeIcon2 : likeIcon1)}"
+                    @click="setLike(msg.liked, index)"
+                    >赞({{msg.likes}})</span>
+                  <span class="reply" @click="handleReply(index)">回复</span>
+                  <!-- 回复框 -->
+                   <div v-if="curItemIndex === index && !curChildItemIndex">
+                    <el-input v-model="replyText" ></el-input>
+                    <el-button type="primary" size="mini" @click="confirmReply(msg.id)">确定</el-button>
+                    <el-button size="mini" @click="cancelReply">取消</el-button>
+                  </div>
                 </div>
               </div>
+
             </div>
             <ul class="comment-wrapper">
-              <li class="item comment" v-for="(item, index) in msg.children">
-                <img :src="item.avatar" alt="">
+              <li class="item comment" v-for="(childItem, childIndex) in msg.children">
+                <img :src="childItem.avatar" alt="">
                 <div class="right">
-                  <p>{{item.username}}</p>
-                  <div class="content" v-html="item.content"></div>
+                  <p>{{childItem.username}}</p>
+                  <div class="content" v-html="childItem.content"></div>
                   <div class="info">
-                    <time>{{item.create_time}}</time>
-                    <span class="praise">赞({{item.likes}})</span>
-                    <span class="reply">回复</span>
+                    <time>{{childItem.create_time}}</time>
+                    <span class="praise"
+                    :style="{backgroundImage: 'url(' + (childItem.liked ? likeIcon2 : likeIcon1)}"
+                      @click="setLike(childItem.liked, index, childIndex)">赞({{childItem.likes}})</span>
+                    <span class="reply" @click="handleReply(index, childIndex)">回复</span>
+                  </div>
+                  <!-- 回复框 -->
+                  <div v-if="curItemIndex === index && curChildItemIndex === childIndex">
+                    <el-input v-model="replyText"></el-input>
+                    <el-button type="primary" size="mini" @click="confirmReply(childItem.id)">确定</el-button>
+                    <el-button size="mini" @click="cancelReply">取消</el-button>
                   </div>
                 </div>
               </li>
@@ -75,10 +93,18 @@
 </template>
 <script>
 import Editor from '@/components/Editor'
+const likeIcon1 = require('./../../assets/images/praise.png')
+const likeIcon2 = require('./../../assets/images/praise2.png')
+import store from '@/store'
 export default {
   name: 'Home',
   components: {
     Editor
+  },
+  computed: {
+    info () {
+      return store.state.user.info
+    }
   },
   data() {
     return {
@@ -94,7 +120,12 @@ export default {
         visible: false,
         content: '',
         isClear: true,
-      }
+      },
+      likeIcon1,
+      likeIcon2,
+      curItemIndex: '',
+      curChildItemIndex: '',
+      replyText: ''
     };
   },
   methods: {
@@ -141,15 +172,62 @@ export default {
         this.$message({ type: 'info', message: '内容不能为空' })
       }
       let res = await this.$allRequest.messageAdd({
-        category_id: 1,
+        type: 1,
         content: this.editor.content,
-        type: 0
+        pid: id
       })
       this.messages = res.list
       this.pagination.total = res.total
       this.editor.visible = false
       this.loadData()
     },
+    // 点赞或取消点赞
+    async setLike(liked, index, childIndex) {
+      if (!this.info.id) { // 没有登录
+        this.$message({ type: 'info', message: '请登录后再进行操作' })
+        this.$router.push('/login')
+      }
+      let status =  liked ? -1 : 1
+      await this.$allRequest.setLike({
+        status
+      })
+      let offset = liked ?  -1 : 1
+      if (typeof childIndex === 'undefined') { // 留言
+        this.messages[index].liked = !liked
+        this.messages[index].likes += offset
+      } else { // 评论
+        this.messages[index].children[childIndex].liked = !liked
+        this.messages[index].children[childIndex].likes += offset
+      }
+    },
+    // 回复
+    handleReply (itemIndex, childItemIndex) {
+      this.curItemIndex = itemIndex
+      if (childItemIndex) {
+        this.curChildItemIndex = childItemIndex
+      }
+      this.replyText = ''
+    },
+    // 确认回复
+    async confirmReply (id) {
+      if (!this.replyText.trim()) {
+          this.$message({ type: 'info', message: '内容不能为空' })
+        }
+        let res = await this.$allRequest.messageAdd({
+          category_id: 1,
+          content: this.replyText,
+          type: 0
+        })
+        this.replyText = ''
+        this.curItemIndex = ''
+        this.curChildItemIndex = ''
+    },
+     // 取消回复
+    cancelReply () {
+      this.replyText = ''
+      this.curItemIndex = ''
+      this.curChildItemIndex = ''
+    }
   },
   created() {
     this.loadData()
@@ -161,27 +239,34 @@ export default {
 body{
   background: rgb(241, 244, 249);
 }
-.banner{
-  background: url("./../../assets/images/banner.jpg");
-  height: 500px;
-  width: 100%;
-  position: relative;
-  div{
-    height: 500px;
-    width: 100%;
-    position: absolute;
-    color: #fff;
-    text-align: center;
-    font-size: 93px;
-    padding-top: 161px;
-    background: linear-gradient(230deg,rgba(53,57,74,0),#828282);
-  }
+.home {
+  background: url(/img/banner.6b0d575b.jpg);
+  background-size: cover;
+  height: 100%;
+  padding-top: 50px;
 }
+// .banner{
+//   background: url("./../../assets/images/banner.jpg");
+//   height: 500px;
+//   width: 100%;
+//   position: relative;
+//   div{
+//     height: 500px;
+//     width: 100%;
+//     position: absolute;
+//     color: #fff;
+//     text-align: center;
+//     font-size: 93px;
+//     padding-top: 161px;
+//     background: linear-gradient(230deg,rgba(53,57,74,0),#828282);
+//   }
+// }
 .inner{
   margin: 0 auto;
   width: 1200px;
   background: white;
   padding: 0 10px;
+  overflow: hidden;
   header{
     height: 60px;
     border-color: #e7e7e7;
@@ -205,6 +290,7 @@ body{
   }
   .editor{
     width: 750px;
+    margin-top: 36px;
     .editor-btns{
       margin: 15px 0;
       display: flex;
@@ -245,13 +331,15 @@ body{
               margin-right: 10px;
             }
             .praise{
-              background: url("./../../assets/images/praise.png") left -7px no-repeat;
+              // background: url("./../../assets/images/praise.png") left -7px no-repeat;
+              background-repeat: no-repeat;
+              background-position: left -7px;
               padding: 1.5px 0px 0 22px;
               margin-right: 10px;
               cursor: pointer;
-              &:hover{
-
-              }
+              // &:hover{
+              //   background: url("./../../assets/images/praise_hover.png") left -7px no-repeat !important;
+              // }
             }
             .reply{
               background: url("./../../assets/images/reply.png") left 2px no-repeat;

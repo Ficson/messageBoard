@@ -20,14 +20,14 @@
             </div>
           </div>
           <ul class="comment-wrapper">
-            <li class="item comment" v-for="(item, index) in msg.children">
-              <img :src="item.avatar" alt="">
+            <li class="item comment" v-for="(childItem, childIndex) in msg.children">
+              <img :src="childItem.avatar" alt="">
               <div class="right">
-                <p>{{item.username}}</p>
-                <div class="content" v-html="item.content"></div>
+                <p>{{childItem.username}}</p>
+                <div class="content" v-html="childItem.content"></div>
                 <div class="info">
-                  <time>{{item.create_time}}</time>
-                  <span class="praise">赞({{item.likes}})</span>
+                  <time>{{childItem.create_time}}</time>
+                  <span class="praise">赞({{childItem.likes}})</span>
                   <span class="reply">回复</span>
                 </div>
               </div>
@@ -146,7 +146,7 @@ main.messages{
               margin-right: 10px;
               cursor: pointer;
               &:hover{
-
+                background: url("./../../../assets/images/praise_hover.png") left -7px no-repeat;
               }
             }
             .reply{

@@ -19,12 +19,12 @@ module.exports.create = function(obj,cb) {
  * @param  {[type]}   conditions 查询条件
  * @param  {Function} cb         回调函数
  */
-module.exports.list = function(conditions, cb) {
-  daoModule.list("MessageModel", conditions, function (err, models) {
-    if (err) return cb(err, null)
-    cb(null, models)
-  })
-}
+// module.exports.list = function(conditions, cb) {
+//   daoModule.list("MessageModel", conditions, function (err, models) {
+//     if (err) return cb(err, null)
+//     cb(null, models)
+//   })
+// }
 
 /**
  * 通过查询条件获取留言对象
@@ -37,90 +37,69 @@ module.exports.findOne = function(conditions,cb) {
 }
 
 /**
- * 通过条件分页查询留言(包括评论和评论的评论)
+ * 通过条件分页查询留言(包括评论和评论的评论还有留言)
  * 
  * @param  {[type]}   key    关键词
  * @param  {[type]}   offset 
  * @param  {[type]}   limit  
  * @param  {Function} cb     回调函数
  */
-
-// module.exports.findPage = function(key, offset, limit, cb) {
-//   db = databaseModule.getDatabase()
-//   database.driver.execQuery("SELECT m.id, m.content, m.category_id, m.user_id, m.create_time, m.update_time, m.likes from message as m" + 
-//   "WHERE msg_title LIKE ? LIMIT ?,?" + 
-//   "LEFT JOIN user as u On m.user_id=.id",
-//   ["%" + key + "%", offset, limit, function(err, msgs) {
-//       if (err) return db("查询执行出错")
-//       // db(null, users)
-//       findComment(msgs)
-//     }]
-//   )
-// }
-
-// function findComment(msgs) {
-//   msgs.forEach(item => {
-//     db = databaseModule.getDatabase()
-//     database.driver.execQuery("SELECT  FROM comment WHERE msg_id = ?",
-//     [item.id, function(err, msgs) {
-        
-//       }]
-//     )
-//   })
-// }
-
 module.exports.getMessages = function(query, cb) {
   // db = databaseModule.getDatabase()
-  const { pagenum = 0, pagesize = 10, category_id = '', content = '', id = ''} = query
-  count({ category_id, content, pid: -1, id }, function (err1, msgCount){
+  const { pagenum = 0, pagesize = 10, category_id = '', content = '', owner_id = '', user_id = ""} = query
+  count({ category_id, content, pid: -1, owner_id }, function (err1, msgCount){
       if (err1) return cb(err1)
-      let idSql = id ? ` and m.id = ${id}` : ''
+      let idSql = owner_id ? ` and m.id = ${owner_id}` : '' // 筛选用户的留言
       const sqlMsg = `select m.id,m.content, m.user_id, m.likes, m.type, m.isAuthor, m.create_time, u.username, u.avatar 
       from message as m left join user as u on m.user_id = u.id where m.content LIKE ? and m.pid=-1` + idSql + ` order by create_time DESC limit ?, ?`
-      database.driver.execQuery(sqlMsg, [`%${content}%`, pagenum * pagesize, pagesize], function(err2, resMsg) {
+      database.driver.execQuery(sqlMsg, [`%${content}%`, pagenum * pagesize, pagesize], function(err2, msgs) {
         if (err2) return cb(err2)
-        findComments(resMsg, list =>{
-          return cb(null,{
-            list,
-            total: msgCount,
-          })
+        // 查询是否点赞
+        // setLikes(msgs, user_id)
+        // 根据留言找评论
+        findComments(msgs, msgAndComments =>{
+          return cb(null,{ msgAndComments, total: msgCount})
         })
       })
    })
 }
 
-function findComments(resMsg, cb) {
+// 查找评论
+function findComments(msgs, cb) {
   // 获取对应页的回复数据
-  const pids = Array.isArray(resMsg) ? resMsg.map(i => i.id) : []
+  const pids = Array.isArray(msgs) ? msgs.map(i => i.id) : []
   if (pids.length) {
       const sqlReply = `select m.id,m.content, m.user_id, m.likes, m.type, m.isAuthor, m.create_time, m.pid, u.username, u.avatar 
       from message as m left join user as u on m.user_id = u.id where pid in (${pids.join(',')}) order by create_time`
       database.driver.execQuery(sqlReply, function(err3, resReply) {
         if (err3) return cb(err3)
-        const list = resMsg.map(item => {
+        const msgAndComments = msgs.map(item => {
         const children = resReply.filter(i => i.pid === item.id)
           children.map(j => j.pName = item.username)
-          return {
-              ...item,
-              children
-          }
+          return { ...item, children }
         })
-    
-      return cb(list)
+        // setLikes(msgAndComments, user_id)
+      return cb(msgAndComments)
     })
   }
 }
 
+// 设置点赞状态（应该放到MessageService中来做）
+// function setLikes(msgs, user_id) {
+//   msgs.forEach(item => {
+//     if(!user_id) {
+//       item.liked = false
+//       continue
+//     } 
+//     let sql = `select * from like where user_id=${user_id}` 
+//   })
+// }
+
 // 获取留言数量
 function count(conditions, cb) {
-  let {
-    content = '',
-    pid = '',
-    category_id = '',
-    id = ''
-  } = conditions
+  let { content = '', pid = '', category_id = '', owner_id = '' } = conditions
   let categorySql = category_id ? ` and category_id = ${category_id}` : ''
-  let idSql = id ? ` and id = ${id}` : ''
+  let idSql = owner_id ? ` and id = ${owner_id}` : ''
 	sql = 'SELECT count(*) as count FROM message WHERE content LIKE ? and pid = ? ' + idSql + categorySql;
 		database.driver.execQuery(sql ,["%" + content + "%", pid],function(err,result){
 			if(err) return cb(err);

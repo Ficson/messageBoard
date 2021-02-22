@@ -15,8 +15,9 @@
     <el-container class="layout-right">
       <el-header>
         <div>
-          <i class="el-icon-chat-line-square"></i>
-          亲爱的{{info.name}}，欢迎您登录后台系统，
+          <!-- <i class="el-icon-chat-line-square"></i> -->
+          <!-- 亲爱的{{info.name}}，欢迎您登录后台系统， -->
+          <el-button type="primary" style="margin-right:10px;" @click="$router.push('/home')">去留言</el-button>
         </div>
         <div @click="logout" style="cursor: pointer;">
           <span>退出</span>
@@ -77,7 +78,7 @@ export default {
       background-color: #fff;
       border-bottom: 1px solid #e4e8eb;
       z-index: 1;
-      padding: 0 52px;
+      padding: 0 52px 0 19px;
       line-height: 60px;
       display: flex;
       justify-content: space-between;

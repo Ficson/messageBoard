@@ -3,6 +3,7 @@ var path = require("path");
 var dao = require(path.join(process.cwd(),"dao/DAO"));
 var messageDAO = require(path.join(process.cwd(),"dao/MessageDAO"));
 var categoryDAO = require(path.join(process.cwd(),"dao/CategoryDAO"));
+var likeDAO = require(path.join(process.cwd(),"dao/LikeDAO"));
 var logger = require('../modules/logger').logger();
 var moment = require('moment');
 
@@ -129,12 +130,25 @@ module.exports.getAllMessages = function(conditions,cb) {
         "total": result.total,// ??
         "pagenum": conditions.pagenum,
         "pagesize": conditions.pagesize,
-        "list": result.list,
+        "list": setLikes(result.msgAndComments, conditions.user_id),
       };
 			return cb(null,resultDta);
 		}
 		cb(null,result);
 	});
+}
+// 设置点赞
+function setLikes(msgAndComments, user_id) {
+  msgAndComments.forEach(item => {
+    // 如果是数组，则递归
+    if (Array.isArray(item) && item.length !== 0 ) {
+      setLikes(item)
+    // 否则设置like属性 
+    } else {
+      item.liked = !user_id ? false : likeDAO.existsById(user_id, item.id) 
+    }
+  })
+  return msgAndComments
 }
 
 // 查找单条留言

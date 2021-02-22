@@ -28,6 +28,10 @@ export default {
   API_MESSAGE_UPDATE: { url: '/api/message/update', type: 'post', isqs: true }, // 留言更新
   API_MESSAGE_FIND_MESSAGE_BY_ID: { url: '/api/message/findMessageById', type: 'post', isqs: true }, // 查询单条留言
 
+  // -------4. 点赞-------------
+  API_LIKE_SET: { url: '/api/like/set', type: 'post', isqs: true }, // 点赞
+
+
 
   AAAAAAA: { url: '/aaaaaaa', type: 'post', isqs: true }, // aaaaaa
 
