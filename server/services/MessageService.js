@@ -6,6 +6,8 @@ var categoryDAO = require(path.join(process.cwd(),"dao/CategoryDAO"));
 var likeDAO = require(path.join(process.cwd(),"dao/LikeDAO"));
 var logger = require('../modules/logger').logger();
 var moment = require('moment');
+var times1 = 0 
+var times2 = 0 
 
 // 添加留言
 module.exports.createMessage = function(params, cb) {
@@ -126,34 +128,46 @@ module.exports.getAllMessages = function(conditions,cb) {
       return cb(err)
     }
 		if(result) {
+      setLikes(result.msgAndComments, conditions.user_id)
 			var resultDta = {
         "total": result.total,// ??
         "pagenum": conditions.pagenum,
         "pagesize": conditions.pagesize,
-        "list": setLikes(result.msgAndComments, conditions.user_id),
       };
-			return cb(null,resultDta);
+      // 赋值完了再返回最后的结果
+			var interval = setInterval(function(){
+        if (times1 === times2 & times1 !== 0) {
+        clearInterval(interval)
+          times1 = 0 
+          times2 = 0
+          resultDta.list = result.msgAndComments
+          return cb(null,resultDta)
+        }
+      }, 1000)
 		}
-		cb(null,result);
+		// cb(null,result);
 	});
 }
 // 设置点赞
 function setLikes(msgAndComments, user_id) {
   msgAndComments.forEach(item => {
+    times1 ++
     // 如果是数组，则递归
     if (Array.isArray(item) && item.length !== 0 ) {
       setLikes(item)
     // 否则设置like属性 
     } else {
-      item.liked = !user_id ? false : likeDAO.existsById(user_id, item.id) 
+      likeDAO.existsById(user_id, item.id, function (isExists) {
+        times2 ++
+        item.liked = !user_id ? false : isExists ? true: false 
+      }) 
     }
   })
-  return msgAndComments
 }
 
 // 查找单条留言
 module.exports.findMessageById = function (id, cb) {
-  dao.findOne("MessageModel",{"id":id },function(err,message) {
+  messageDAO.findOne({"id":id },function(err,message) {
     if(err) return cb(err);
     cb(null, message)
   });

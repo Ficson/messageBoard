@@ -6,7 +6,7 @@ module.exports = function(db, callback) {
     create_time: String,
     update_time: String
   }, {
-    table: "category"
+    table: "like"
   })
   return callback()
 }

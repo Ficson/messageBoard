@@ -10,9 +10,9 @@ router.post("/set",
 	if(!req.body.msg_id){
 		return res.sendResult(null,400,"留言id不能为空");
   } 
-  if(!req.body.user_id){
-		return res.sendResult(null,400,"用户id不能为空");
-  } 
+  // if(!req.body.user_id){
+	// 	return res.sendResult(null,400,"用户id不能为空");
+  // } 
   if(!req.userInfo.uid){
 		return res.sendResult(null,400,"未登录，无法点赞");
   }
@@ -22,18 +22,17 @@ router.post("/set",
   next()
 },
 	function (req, res, next) {
-    if (status == 1) { // 点赞
-      let params = {
-        "msg_id": req.body.msg_id,
-        "user_id": req.body.user_id,
-        "msg_id": req.body.msg_id,
-      }
+    let params = {
+      "msg_id": parseInt(req.body.msg_id),
+      "user_id": req.userInfo.uid,
+    }
+    if (req.body.status == 1) { // 点赞
       likeServ.createLike(params, function(err, category) {
         if (err) return res.sendResult(null, 400, err)
         res.sendResult(category, 201, '点赞成功')
       })
       // 取消点赞
-    } else if(status == -1){
+    } else if(req.body.status == -1){
       likeServ.deleteLike(params, function(err, category) {
         if (err) return res.sendResult(null, 400, err)
         res.sendResult(category, 201, '取消点赞成功')
