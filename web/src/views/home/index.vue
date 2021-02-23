@@ -34,7 +34,7 @@
                   <time>{{msg.create_time}}</time>
                   <span class="praise"
                     :style="{backgroundImage: 'url(' + (msg.liked ? likeIcon2 : likeIcon1)}"
-                    @click="setLike(msg.liked, index)"
+                    @click="setLike(msg.id, msg.liked, index)"
                     >赞({{msg.likes}})</span>
                   <span class="reply" @click="handleReply(index)">回复</span>
                   <!-- 回复框 -->
@@ -57,7 +57,7 @@
                     <time>{{childItem.create_time}}</time>
                     <span class="praise"
                     :style="{backgroundImage: 'url(' + (childItem.liked ? likeIcon2 : likeIcon1)}"
-                      @click="setLike(childItem.liked, index, childIndex)">赞({{childItem.likes}})</span>
+                      @click="setLike(childItem.id, childItem.liked, index, childIndex)">赞({{childItem.likes}})</span>
                     <span class="reply" @click="handleReply(index, childIndex)">回复</span>
                   </div>
                   <!-- 回复框 -->
@@ -182,13 +182,14 @@ export default {
       this.loadData()
     },
     // 点赞或取消点赞
-    async setLike(liked, index, childIndex) {
+    async setLike(id, liked, index, childIndex) {
       if (!this.info.id) { // 没有登录
         this.$message({ type: 'info', message: '请登录后再进行操作' })
         this.$router.push('/login')
       }
       let status =  liked ? -1 : 1
       await this.$allRequest.setLike({
+        msg_id: id,
         status
       })
       let offset = liked ?  -1 : 1

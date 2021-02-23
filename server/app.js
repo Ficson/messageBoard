@@ -60,7 +60,7 @@ message = require('./routes/api/message')
 admin_passport.setup(app,userService.login);
 // 设置 passport 登录入口点
 app.use("/api/user/register",user.register); // 注册
-app.use("/api/message/list",message.list); // 查询留言
+// app.use("/api/message/list",message.list); // 查询留言
 // app.use("/api/user/logout",user.logout); // 退出
 app.use("/api/user/login",admin_passport.login);
 

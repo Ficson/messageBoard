@@ -91,7 +91,7 @@ function findComments(msgs, cb) {
 //       item.liked = false
 //       continue
 //     } 
-//     let sql = `select * from like where user_id=${user_id}` 
+//     let sql = `select * from like where msg_id = ${item.id} and user_id=${user_id}` 
 //   })
 // }
 

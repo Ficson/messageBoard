@@ -47,10 +47,23 @@ module.exports.destroy = function(id, cb) {
  * @param  {Function} cb       回调函数
  * 
  */
-module.exports.existsById = function(user_id, id) {
+module.exports.existsById = function(user_id, id, cb) {
 	var db = databaseModule.getDatabase();
 	var Model = db.models.LikeModel;
 	Model.exists({"user_id":user_id, 'id': id},function(err,isExists){
-		return isExists;
+		return cb(isExists);
+	});
+}
+
+/**
+ * 通过查询条件获取赞
+ * 
+ * @param  {[type]}   conditions 条件
+ * @param  {Function} cb         回调函数
+ */
+module.exports.findOne = function(conditions,cb) {
+  daoModule.findOne("LikeModel",conditions, function (err, model) {
+		if (err) return cb(err, null)
+    cb(null, model)
 	});
 }
