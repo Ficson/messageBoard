@@ -4,7 +4,7 @@
       <el-input placeholder="输入关键字搜索" style="width:200px;" v-model="keyword"></el-input>
       <el-button type="primary" icon="el-icon-search" class="search" @click="search">搜索</el-button>
     </div>
-  <main class="messages">
+  <main class="messages" v-loading="loading">
       <ul>
         <li v-for="(msg, index) in messages" class="msg-wrapper">
           <div class="item">
@@ -13,7 +13,7 @@
               <p>{{msg.username}}</p>
               <div class="content" v-html="msg.content"></div>
               <div class="info">
-                <time>{{msg.create_time}}</time>
+                <time>{{msg.create_time | timeAgo}}</time>
                 <span class="praise">赞({{msg.likes}})</span>
                 <span class="reply">回复</span>
               </div>
@@ -26,7 +26,7 @@
                 <p>{{childItem.username}}</p>
                 <div class="content" v-html="childItem.content"></div>
                 <div class="info">
-                  <time>{{childItem.create_time}}</time>
+                  <time>{{childItem.create_time | timeAgo}}</time>
                   <span class="praise">赞({{childItem.likes}})</span>
                   <span class="reply">回复</span>
                 </div>
@@ -66,18 +66,26 @@ export default {
         pageArray: [5, 10, 50, 100],
         total: 0
       },
+      loading: false
     }
   },
   methods: {
     async loadData(keyword, pageIndex, pageSize) {
-      let res = await this.$allRequest.getMessageList({
-        content: keyword || '',
-        pagenum: this.pagination.pageIndex || this.pageIndex,
-        pagesize: this.pagination.pageSize || this.pageSize,
-        id: store.state.user.info.id
-      })
-      this.messages = res.list
-      this.pagination.total = res.total
+      try {
+          this.loading = true
+          let res = await this.$allRequest.getMessageList({
+          content: keyword || '',
+          pagenum: this.pagination.pageIndex || this.pageIndex,
+          pagesize: this.pagination.pageSize || this.pageSize,
+          id: store.state.user.info.id
+        })
+        this.messages = res.list
+        this.pagination.total = res.total
+      } catch {
+
+      } finally {
+        this.loading = false
+      }
     },
     search() {
       this.loadData(this.keyword)

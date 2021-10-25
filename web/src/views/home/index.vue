@@ -1,8 +1,8 @@
 <template>
   <div class="home">
-    <!-- <section class="banner">
-      <div>隐秘的留言板</div>
-    </section> -->
+    <section class="banner">
+      <div>霸气留言板</div>
+    </section>
     <section class="inner">
       <header v-show="!editor.visible">
         <div class="left">
@@ -12,7 +12,7 @@
         </div>
         <div class="right">
           <el-button type="primary" plain @click="showEditor">我要留言</el-button>
-          <el-button plain @click="$router.push('/')">进入后台</el-button>
+          <el-button v-if="this.info.id" plain @click="$router.push('/myMessageManage/index')">进入后台</el-button>
         </div>
       </header>
       <div class="editor" v-if="editor.visible">
@@ -22,7 +22,7 @@
           <el-button @click="cancel">取消</el-button>
         </div>
       </div>
-      <main>
+      <main v-loading="loading">
         <ul>
           <li v-for="(msg, index) in messages" class="msg-wrapper">
             <div class="item">
@@ -31,7 +31,7 @@
                 <p>{{msg.username}}</p>
                 <div class="content" v-html="msg.content"></div>
                 <div class="info">
-                  <time>{{msg.create_time}}</time>
+                  <time>{{ msg.create_time | timeAgo }}</time>
                   <span class="praise"
                     :style="{backgroundImage: 'url(' + (msg.liked ? likeIcon2 : likeIcon1)}"
                     @click="setLike(msg.id, msg.liked, index)"
@@ -54,7 +54,7 @@
                   <p>{{childItem.username}}</p>
                   <div class="content" v-html="childItem.content"></div>
                   <div class="info">
-                    <time>{{childItem.create_time}}</time>
+                    <time>{{ childItem.create_time | timeAgo }}</time>
                     <span class="praise"
                     :style="{backgroundImage: 'url(' + (childItem.liked ? likeIcon2 : likeIcon1)}"
                       @click="setLike(childItem.id, childItem.liked, index, childIndex)">赞({{childItem.likes}})</span>
@@ -125,19 +125,28 @@ export default {
       likeIcon2,
       curItemIndex: '',
       curChildItemIndex: '',
-      replyText: ''
+      replyText: '',
+      loading: false
     };
   },
   methods: {
     // 加载数据
     async loadData(keyword, pageIndex, pageSize) {
-      let res = await this.$allRequest.getMessageList({
-        content: keyword || '',
-        pagenum: this.pagination.pageIndex || this.pageIndex,
-        pagesize: this.pagination.pageSize || this.pageSize
-      })
-      this.messages = res.list
-      this.pagination.total = res.total
+      // this.loading = true
+      // try {
+        let res = await this.$allRequest.getMessageList({
+          content: keyword || '',
+          pagenum: this.pagination.pageIndex || this.pageIndex,
+          pagesize: this.pagination.pageSize || this.pageSize
+        })
+        this.messages = res.list
+        this.pagination.total = res.total
+      // } catch{
+
+      // } finally{
+        // this.loading = false
+      // }
+
     },
     // 搜索
     search() {
@@ -155,6 +164,11 @@ export default {
     },
     // 显示编辑器
     showEditor() {
+      if (!this.info.id) { // 没有登录
+        this.$message({ type: 'info', message: '请登录后再进行操作' })
+        this.$router.push('/login')
+        return
+      }
       this.editor.visible = true
       this.editor.content =''
     },
@@ -171,7 +185,7 @@ export default {
       if (!this.editor.content.trim()) {
         this.$message({ type: 'info', message: '内容不能为空' })
       }
-      let res = await this.$allRequest.messageAdd({
+      let res = this.$allRequest.messageAdd({
         type: 1,
         content: this.editor.content,
         pid: id
@@ -186,6 +200,7 @@ export default {
       if (!this.info.id) { // 没有登录
         this.$message({ type: 'info', message: '请登录后再进行操作' })
         this.$router.push('/login')
+        return
       }
       let status =  liked ? -1 : 1
       await this.$allRequest.setLike({
@@ -203,6 +218,11 @@ export default {
     },
     // 回复
     handleReply (itemIndex, childItemIndex) {
+      if (!this.info.id) { // 没有登录
+        this.$message({ type: 'info', message: '请登录后再进行操作' })
+        this.$router.push('/login')
+        return
+      }
       this.curItemIndex = itemIndex
       if (childItemIndex) {
         this.curChildItemIndex = childItemIndex
@@ -230,7 +250,8 @@ export default {
       this.curChildItemIndex = ''
     }
   },
-  created() {
+  mounted() {
+    store.dispatch('getInfo').then(res => {}) // 获取用户权限
     this.loadData()
   }
 }
@@ -241,27 +262,28 @@ body{
   background: rgb(241, 244, 249);
 }
 .home {
-  background: url(/img/banner.6b0d575b.jpg);
+  background: url(./../../assets/images/earth.png);
   background-size: cover;
-  height: 100%;
-  padding-top: 50px;
+  height: auto;
+  min-height: 100%;
+  padding-top: 20px;
 }
-// .banner{
-//   background: url("./../../assets/images/banner.jpg");
-//   height: 500px;
-//   width: 100%;
-//   position: relative;
-//   div{
-//     height: 500px;
-//     width: 100%;
-//     position: absolute;
-//     color: #fff;
-//     text-align: center;
-//     font-size: 93px;
-//     padding-top: 161px;
-//     background: linear-gradient(230deg,rgba(53,57,74,0),#828282);
-//   }
-// }
+.banner{
+  // background: url("./../../assets/images/earth.png");
+  // height: 20px;
+  // width: 100%;
+  // position: relative;
+  // div{
+    height: 100px;
+    width: 100%;
+    // position: absolute;
+    color: #fff;
+    text-align: center;
+    font-size: 67px;
+    // padding-top: 161px;
+    // background: linear-gradient(230deg,rgba(53,57,74,0),#828282);
+  // }
+}
 .inner{
   margin: 0 auto;
   width: 1200px;

@@ -1,5 +1,8 @@
 // import { parseTime } from '@/utils'
 import Vue from 'vue'
+import moment from 'moment'
+
+
 let _this = Vue.prototype
 /**
  * 转换时间格式
@@ -14,6 +17,7 @@ export function formatDatetime (time) {
  * @param {number} time
  */
 export function timeAgo (time) {
+  time = new Date(time).getTime()
   let now = new Date().getTime()
   let oneMinute = 60000
   let oneHour = oneMinute * 60

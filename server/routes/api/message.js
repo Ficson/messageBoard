@@ -70,7 +70,7 @@ router.post("/delete",
 )
 
 // 查询列表
-router.post('/list', function(req,res,next) {
+router.list = function(req,res,next) {
 	var conditions = {
 		"pagenum" : req.body.pagenum ? parseInt(req.body.pagenum-1): 0,
 		"pagesize" : req.body.pagesize ? parseInt(req.body.pagesize) : 10,
@@ -88,7 +88,7 @@ router.post('/list', function(req,res,next) {
 			res.sendResult(result,200,"获取成功");
 		}
 	);
-})
+}
 
 // 查询单条留言
 router.post("/findMessageById",

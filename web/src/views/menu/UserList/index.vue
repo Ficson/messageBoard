@@ -101,7 +101,7 @@ export default {
         },
         {
           prop: 'username',
-          label: 'username',
+          label: '用户名',
           align: 'center',
         },
         {

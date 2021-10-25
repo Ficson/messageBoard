@@ -17,7 +17,7 @@
         <div>
           <!-- <i class="el-icon-chat-line-square"></i> -->
           <!-- 亲爱的{{info.name}}，欢迎您登录后台系统， -->
-          <el-button type="primary" style="margin-right:10px;" @click="$router.push('/home')">去留言</el-button>
+          <el-button type="primary" style="margin-right:10px;" @click="$router.push('/home')">去留言版</el-button>
         </div>
         <div @click="logout" style="cursor: pointer;">
           <span>退出</span>
