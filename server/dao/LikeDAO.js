@@ -47,10 +47,10 @@ module.exports.destroy = function(id, cb) {
  * @param  {Function} cb       回调函数
  * 
  */
-module.exports.existsById = function(user_id, id, cb) {
+module.exports.existsById = function(user_id, msg_id, cb) {
 	var db = databaseModule.getDatabase();
 	var Model = db.models.LikeModel;
-	Model.exists({"user_id":user_id, 'id': id},function(err,isExists){
+	Model.exists({"user_id":user_id, 'msg_id': msg_id},function(err,isExists){
 		return cb(isExists);
 	});
 }

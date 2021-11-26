@@ -82,10 +82,8 @@ export default {
   },
    // 获取类型列表
    getCategoryList: function (data) {
-    return apost({
-      url: api.API_CATEGORY_LIST.url,
-      data: data,
-      isqs: api.API_CATEGORY_LIST.isqs
+    return aget({
+      url: api.API_CATEGORY_LIST.url
     })
   },
    // 更新类型

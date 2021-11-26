@@ -69,7 +69,7 @@ function findComments(msgs, cb) {
   // 获取对应页的回复数据
   const pids = Array.isArray(msgs) ? msgs.map(i => i.id) : []
   if (pids.length) {
-      const sqlReply = `select m.id,m.content, m.user_id, m.likes, m.type, m.isAuthor, m.create_time, m.pid, u.username, u.avatar 
+      const sqlReply = `select m.id,m.content, m.user_id, m.likes, m.type, m.isAuthor, m.create_time, m.pid, m.replyPeople, u.username, u.avatar 
       from message as m left join user as u on m.user_id = u.id where pid in (${pids.join(',')}) order by create_time`
       database.driver.execQuery(sqlReply, function(err3, resReply) {
         if (err3) return cb(err3)

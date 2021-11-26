@@ -11,6 +11,7 @@ module.exports = function(db, callback) {
    isAuthor: Boolean,
   create_time: String,
   update_time: String,
+  replyPeople: String,
   }, {
     table: "message"
   })

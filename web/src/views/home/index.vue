@@ -16,6 +16,14 @@
         </div>
       </header>
       <div class="editor" v-if="editor.visible">
+        <el-select style="width: 200" v-model="selectedCategory">
+              <el-option
+              v-for="item in categoryOptions"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+              </el-option>
+            </el-select>
         <Editor v-model="editor.content" :isClear="editor.isClear" @change="change" style="width: 750px;"></Editor>
         <div class="editor-btns">
           <el-button type="primary" @click="save">发表</el-button>
@@ -25,6 +33,7 @@
       <main v-loading="loading">
         <ul>
           <li v-for="(msg, index) in messages" class="msg-wrapper">
+            <!-- 留言 -->
             <div class="item">
               <img :src="msg.avatar" alt="">
               <div class="right">
@@ -36,22 +45,22 @@
                     :style="{backgroundImage: 'url(' + (msg.liked ? likeIcon2 : likeIcon1)}"
                     @click="setLike(msg.id, msg.liked, index)"
                     >赞({{msg.likes}})</span>
-                  <span class="reply" @click="handleReply(index)">回复</span>
+                  <span class="reply" @click="handleReply(index ,null)">回复</span>
                   <!-- 回复框 -->
-                   <div v-if="curItemIndex === index && !curChildItemIndex">
-                    <el-input v-model="replyText" ></el-input>
-                    <el-button type="primary" size="mini" @click="confirmReply(msg.id)">确定</el-button>
+                   <div v-if="curItemIndex === index && curChildItemIndex === ''">
+                    <el-input v-model="replyText" class="reply-input" :placeholder="'@ ' + msg.username"></el-input>
+                    <el-button type="primary" size="mini" @click="confirmReply(msg.id, msg.username)">确定</el-button>
                     <el-button size="mini" @click="cancelReply">取消</el-button>
                   </div>
                 </div>
               </div>
-
+            <!-- 评论 -->
             </div>
             <ul class="comment-wrapper">
               <li class="item comment" v-for="(childItem, childIndex) in msg.children">
                 <img :src="childItem.avatar" alt="">
                 <div class="right">
-                  <p>{{childItem.username}}</p>
+                  <p>{{childItem.username}} @ {{childItem.replyPeople}}</p>
                   <div class="content" v-html="childItem.content"></div>
                   <div class="info">
                     <time>{{ childItem.create_time | timeAgo }}</time>
@@ -62,8 +71,8 @@
                   </div>
                   <!-- 回复框 -->
                   <div v-if="curItemIndex === index && curChildItemIndex === childIndex">
-                    <el-input v-model="replyText"></el-input>
-                    <el-button type="primary" size="mini" @click="confirmReply(childItem.id)">确定</el-button>
+                    <el-input v-model="replyText" class="reply-input" :placeholder="'@ ' + childItem.username"></el-input>
+                    <el-button type="primary" size="mini" @click="confirmReply(childItem.id, childItem.username)">确定</el-button>
                     <el-button size="mini" @click="cancelReply">取消</el-button>
                   </div>
                 </div>
@@ -125,15 +134,19 @@ export default {
       likeIcon2,
       curItemIndex: '',
       curChildItemIndex: '',
+      replyObject: '',
       replyText: '',
-      loading: false
+      loading: false,
+      categoryOptions: [], // 类型列表
+      selectedCategory: '',
+      replyPlaceholder: ''
     };
   },
   methods: {
     // 加载数据
     async loadData(keyword, pageIndex, pageSize) {
-      // this.loading = true
-      // try {
+      this.loading = true
+      try {
         let res = await this.$allRequest.getMessageList({
           content: keyword || '',
           pagenum: this.pagination.pageIndex || this.pageIndex,
@@ -141,12 +154,11 @@ export default {
         })
         this.messages = res.list
         this.pagination.total = res.total
-      // } catch{
+      } catch{
 
-      // } finally{
-        // this.loading = false
-      // }
-
+      } finally{
+        this.loading = false
+      }
     },
     // 搜索
     search() {
@@ -169,9 +181,22 @@ export default {
         this.$router.push('/login')
         return
       }
+      this.loadCategory()
       this.editor.visible = true
       this.editor.content =''
     },
+
+    // 加载类型列表
+    async loadCategory() {
+      const res =  await this.$allRequest.getCategoryList()
+      this.categoryOptions = res.map(item => {
+        return {
+          value: item.id,
+          label: item.name
+        }
+      })
+    },
+
     // 改变富文本
     change (val) {
       console.log(val);
@@ -185,15 +210,21 @@ export default {
       if (!this.editor.content.trim()) {
         this.$message({ type: 'info', message: '内容不能为空' })
       }
-      let res = this.$allRequest.messageAdd({
-        type: 1,
-        content: this.editor.content,
-        pid: id
-      })
-      this.messages = res.list
-      this.pagination.total = res.total
-      this.editor.visible = false
-      this.loadData()
+      try {
+        let res = this.$allRequest.messageAdd({
+          type: 0,
+          content: this.editor.content,
+          category_id: this.selectedCategory
+        }).then(()=> {
+          this.messages = res.list
+          this.pagination.total = res.total
+          this.editor.visible = false
+          this.$utils.myMessage('添加成功', 'success')
+          this.selectedCategory = ''
+          this.loadData()
+        })
+      } catch {
+      }
     },
     // 点赞或取消点赞
     async setLike(id, liked, index, childIndex) {
@@ -216,7 +247,7 @@ export default {
         this.messages[index].children[childIndex].likes += offset
       }
     },
-    // 回复
+    // 回复评论
     handleReply (itemIndex, childItemIndex) {
       if (!this.info.id) { // 没有登录
         this.$message({ type: 'info', message: '请登录后再进行操作' })
@@ -224,24 +255,29 @@ export default {
         return
       }
       this.curItemIndex = itemIndex
-      if (childItemIndex) {
+      if (childItemIndex !== null) {
         this.curChildItemIndex = childItemIndex
+      } else {
+        this.curChildItemIndex = ''
       }
       this.replyText = ''
     },
     // 确认回复
-    async confirmReply (id) {
+    async confirmReply (id, replyPeople) {
       if (!this.replyText.trim()) {
           this.$message({ type: 'info', message: '内容不能为空' })
         }
         let res = await this.$allRequest.messageAdd({
-          category_id: 1,
+          pid: id,
           content: this.replyText,
-          type: 0
+          type: 1,
+          replyPeople
+
         })
         this.replyText = ''
         this.curItemIndex = ''
         this.curChildItemIndex = ''
+        this.loadData()
     },
      // 取消回复
     cancelReply () {
@@ -369,11 +405,17 @@ body{
               padding: 1.5px 0px 0 22px;
               cursor: pointer;
             }
+            .reply-input {
+              margin: 5px 0;
+            }
           }
         }
       }
       .comment-wrapper{
         margin-left: 40px;
+        .reply-input {
+              margin: 5px 0;
+          }
       }
     }
   }
