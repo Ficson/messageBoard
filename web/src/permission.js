@@ -8,45 +8,35 @@ import Vue from 'vue'
 let _this = Vue.prototype
 
 // 路由白名单
-const whiteList = ['/login', '/404', '/home']
+const whiteList = ['/login', '/404', '/home', '/403', '/front/home', '/front/message', '/front/article', '/front/activity']
+
+
 
 // 路由跳转
-router.beforeEach((to, from, next) => {
-
+router.beforeEach(async(to, from, next) => {
   NProgress.start()
   const hasToken = _this.$utils.getLocalStorage('loginToken')
+  const hasGetUserInfo = store.state.user.role !== -1
   // 判断storage里是否有 'loginToken'
-  if (whiteList.indexOf(to.path) !== -1) {
+  if (whiteList.includes(to.path)) {
     next()
-    NProgress.done()
-  } else if (hasToken) {
-      // 判断是否已经拿到权限，没拿到就去vuex中调用方法拿
-      const hasRoles = store.state.router.hasGetRules
-      if (hasRoles) {
-        next()
-      } else {
-        try {
-          // getInfo 方法：请求后端拿到用户信息，拿到该用户的权限role：1或者2
-          store.dispatch('getInfo').then(res => {
-            // 将拿到的用户权限role作为参数调用 generateRoutes 方法，该方法会返回一张路由表
-            store.dispatch('generateRoutes', res.role).then(routers => {
-              router.addRoutes(routers)
-              next({ ...to, replace: true })
-            })
-          }).catch(() => {
-            next('/login')
-            NProgress.done()
-          })
-        } catch (error) {
-          next('/login')
-          NProgress.done()
-        }
-      }
-  } else {
+    // NProgress.done()
+  } else if (!hasToken) {
     next('/login')
-    NProgress.done()
+  } else if (!hasGetUserInfo) {
+    // try {
+      await store.dispatch('getInfo')
+      if (to.matched.length === 0) {
+        next('/404') // 判断此跳转路由的来源路由是否存在，存在的情况跳转到来源路由，否则跳转到404页面
+      }
+      next()
+ }
+  else {
+    if (to.matched.length === 0) {
+      next('/404')
+    }
+    next()
   }
-
 })
 
 router.afterEach(() => {

@@ -1,9 +1,5 @@
 <template>
-  <div class="home">
-    <section class="banner">
-      <div>霸气留言板</div>
-    </section>
-    <section class="inner">
+    <section >
       <header v-show="!editor.visible">
         <div class="left">
           <!-- <i class="el-icon-document"></i> -->
@@ -94,11 +90,7 @@
         </div>
       </main>
     </section>
-    <div class="backtop">
-      <i class="el-icon-arrow-up"></i>
-      回到顶部
-    </div>
-  </div>
+
 </template>
 <script>
 import Editor from '@/components/Editor'
@@ -106,7 +98,7 @@ const likeIcon1 = require('./../../assets/images/praise.png')
 const likeIcon2 = require('./../../assets/images/praise2.png')
 import store from '@/store'
 export default {
-  name: 'Home',
+  name: 'Message',
   components: {
     Editor
   },
@@ -287,45 +279,21 @@ export default {
     }
   },
   mounted() {
-    store.dispatch('getInfo').then(res => {}) // 获取用户权限
+    // store.dispatch('getInfo').then(res => {}) // 获取用户权限
     this.loadData()
   }
 }
 </script>
 
 <style lang='scss'>
-body{
-  background: rgb(241, 244, 249);
-}
-.home {
-  background: url(./../../assets/images/earth.png);
-  background-size: cover;
-  height: auto;
-  min-height: 100%;
-  padding-top: 20px;
-}
 .banner{
-  // background: url("./../../assets/images/earth.png");
-  // height: 20px;
-  // width: 100%;
-  // position: relative;
-  // div{
     height: 100px;
     width: 100%;
-    // position: absolute;
     color: #fff;
     text-align: center;
     font-size: 67px;
-    // padding-top: 161px;
-    // background: linear-gradient(230deg,rgba(53,57,74,0),#828282);
-  // }
 }
-.inner{
-  margin: 0 auto;
-  width: 1200px;
-  background: white;
-  padding: 0 10px;
-  overflow: hidden;
+
   header{
     height: 60px;
     border-color: #e7e7e7;
@@ -333,13 +301,7 @@ body{
     justify-content: space-between;
     padding: 10px 0px;
     .left{
-      // i{
-      //   font-size: 30px;
-      //   margin-right: 10px;
-      //   vertical-align: middle;
-      // }
       .search{
-        // font-size: 10px;
         margin-left: 10px;
       }
     }
@@ -424,28 +386,6 @@ body{
     text-align: right;
     padding: 10px 20px;
   }
-}
-.backtop{
-  position: fixed;
-  right: 10%;
-  bottom: 5%;
-  width: 72px;
-  height: 76px;
-  padding: 14px 0 12px 0;
-  text-align: center;
-  background: #F7F8FA;
-  cursor: pointer;
-  font-size: 14px;
-  &:hover{
-    background: #ECF6FF ;
-  }
-  i{
-    display: block;
-    margin-bottom: 10px;
-    font-size: 25px;
-  }
-}
-
 
 
 </style>

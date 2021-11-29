@@ -1,18 +1,61 @@
 import request from '@/api/allRequest'
 // import { setLocalStorage, removeLocalStorage } from '@/utils'
+import router, { menuRoutes, baseRoutes } from '@/router'
 import Vue from 'vue'
 let _this = Vue.prototype
 
+
+// 判断该route是否有roles
+// function hasPermission (role, item) {
+//   if (item.meta && item.meta.roles) {
+//     return item.meta.roles.includes(role)
+//   } else {
+//     return true
+//   }
+// }
+
+// 过滤同步路由
+function filterAsyncRoutes (routes, role) {
+  const res = []
+  routes.forEach(route => {
+    const hasPermission = route?.meta?.roles?.includes(role) || false
+    if (hasPermission) {
+      if (route.children) {
+        route.children = filterAsyncRoutes(route.children, role)
+      }
+      res.push(route)
+    }
+  })
+  return res
+}
+
+// 根据role生成路由表
+const generateRoutes =  (role) => {
+    let accessedRoutes
+    if (parseInt(role) === 1) { // role=1代表是管理员，不用过滤
+      accessedRoutes = menuRoutes || []
+    } else {
+      accessedRoutes = filterAsyncRoutes(menuRoutes, role)
+    }
+    return accessedRoutes
+}
+
+
+
 const state = {
-  roles: 0,
-  info: {}
+  role: -1,
+  info: {},
+  routers: []
 }
 const mutations = {
-  SET_ROLES: (state, roles) => {
-    state.roles = roles
+  SET_ROLES: (state, role) => {
+    state.role = role
   },
   SET_USER_INFO: (state, data) => {
     state.info = data
+  },
+  SET_ROUTES: (state, routes) => {
+    state.routers = (routes).concat(baseRoutes)
   }
 }
 const actions = {
@@ -57,7 +100,7 @@ const actions = {
       request.logout().then(model => {
         _this.$utils.removeLocalStorage('loginToken')
         _this.$utils.removeLocalStorage('userRole')
-        commit('SET_ROLES', "")
+        commit('SET_ROLES', -1)
         commit("SET_USER_INFO", {})
         resolve()
       }).catch(error => {
@@ -69,10 +112,13 @@ const actions = {
   // 拿到用户信息请求,放进vuex
   getInfo ({ commit, state }) {
     return new Promise((resolve, reject) => {
-      request.getUserInfo().then(model => {
-        commit('SET_ROLES', model.role)
-        commit("SET_USER_INFO", model.info)
-        resolve(model)
+      request.getUserInfo().then(res => {
+        commit('SET_ROLES', res.role)
+        commit("SET_USER_INFO", res.info)
+        const accessedRoutes = generateRoutes (res.role)
+        commit('SET_ROUTES', accessedRoutes)
+        router.addRoutes(accessedRoutes)
+        resolve()
       }).catch(error => {
         reject(error)
       })

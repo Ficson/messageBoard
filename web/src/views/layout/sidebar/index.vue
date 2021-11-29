@@ -34,7 +34,7 @@ export default {
   },
   computed: {
     ...mapState({
-      routers: state => state.router.routers
+      routers: state => state.user.routers
     }),
     activeMenu () {
       const route = this.$route

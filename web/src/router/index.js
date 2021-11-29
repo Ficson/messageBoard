@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Layout from '@/views/layout'
+import Home from '@/views/front'
 
 Vue.use(VueRouter)
 
@@ -28,6 +29,7 @@ Vue.use(VueRouter)
 //     }
 //   ]
 // }
+
 
 export const menuRoutes = [
   {
@@ -107,7 +109,7 @@ export const menuRoutes = [
         path: 'index',
         component: () => import('@/views/menu/PersonalCenter'),
         name: 'PersonalCenter',
-        meta: { title: '个人中心', roles: [1] }
+        meta: { title: '个人中心', roles: [1,2] }
       }
     ]
   },
@@ -124,21 +126,59 @@ export const menuRoutes = [
         path: 'Test',
         component: () => import('@/views/menu/Test/index.vue'),
         name: 'Test',
-        meta: { title: '测试' },
+        meta: { title: '测试', roles: [1, 2] },
         hidden: true
       }
     ]
   },
   {
     path: '*',
-    redirect: '/404'
+    component: () => import('@/views/err/404'),
   }
 ]
 
 export const baseRoutes = [
   {
+    path: '/front',
+    name: 'front',
+    component:Home,
+    meta: { title: '前台', roles: [1, 2] },
+    children: [
+      {
+        path: 'home',
+        name: 'Home',
+        component: () => import('@/views/front/home'),
+        meta: { title: '首页', roles: [1, 2] },
+        alwaysShow: true
+      },
+      {
+        path: 'message',
+        name: 'Message',
+        component: () => import('@/views/front/message'),
+        meta: { title: '留言板', roles: [1, 2] },
+        alwaysShow: true
+      },
+      {
+        path: 'article',
+        name: 'Article',
+        component: () => import('@/views/front/article'),
+        meta: { title: '文章', roles: [1, 2] },
+        alwaysShow: true
+      },
+      {
+        path: 'activity',
+        name: 'Activity',
+        component: () => import('@/views/front/activity'),
+        meta: { title: '活动', roles: [1, 2] },
+        alwaysShow: true
+      }
+    ],
+    alwaysShow: true
+  },
+,
+  {
     path: '/',
-    redirect: '/home',
+    redirect: '/front/home',
     hidden: true
   },
   {
@@ -146,13 +186,18 @@ export const baseRoutes = [
     component: () => import('@/views/login/index'),
     hidden: true
   },
+  // {
+  //   path: '/home',
+  //   component: () => import('@/views/home/index'),
+  //   hidden: true
+  // },
   {
-    path: '/home',
-    component: () => import('@/views/home/index'),
+    path: '/404',
+    component: () => import('@/views/err/404'),
     hidden: true
   },
   {
-    path: '/404',
+    path: '/403',
     component: () => import('@/views/err/404'),
     hidden: true
   }
