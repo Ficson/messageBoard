@@ -1,7 +1,7 @@
 <template>
-<div class="front">
-  <div class="inner">
-    <el-menu
+  <div class="front">
+    <div class="inner">
+      <el-menu
         :default-active="this.$route.path"
         class="el-menu-demo"
         mode="horizontal"
@@ -10,19 +10,19 @@
         background-color="#545c64"
         text-color="#fff"
         active-text-color="#ffd04b"
-        >
-        <el-menu-item v-for="(item,i) in navList" :key="i" :index="item.name">
-              <template slot="title">
-                <span> {{ item.navItem }}</span>
-              </template>
+      >
+        <el-menu-item v-for="(item, i) in navList" :key="i" :index="item.name">
+          <template slot="title">
+            <span> {{ item.navItem }}</span>
+          </template>
         </el-menu-item>
         <div class="operation">
-          <el-button v-if="!info.id" @click="$router.push ('/login');">登录</el-button>
+          <el-button v-if="!info.id" @click="$router.push('/login')">登录</el-button>
           <div v-if="info.id" class="user-visible">
             <el-dropdown>
               <p class="info">
-                <img :src="info.avatar">
-                <span>{{info.username}}</span>
+                <img :src="info.avatar" />
+                <span>{{ info.username }}</span>
               </p>
               <el-dropdown-menu slot="dropdown">
                 <el-dropdown-item>退出登录</el-dropdown-item>
@@ -32,50 +32,47 @@
             <el-button plain @click="$router.push('/myMessageManage/index')">进入后台</el-button>
           </div>
         </div>
-    </el-menu>
-    <el-main class="detailed-content">
-      <router-view />
-    </el-main>
+      </el-menu>
+      <el-main class="detailed-content">
+        <router-view />
+      </el-main>
+    </div>
+    <div class="backtop">
+      <i class="el-icon-arrow-up"></i>
+      回到顶部
+    </div>
   </div>
-  <div class="backtop">
-    <i class="el-icon-arrow-up"></i>
-    回到顶部
-  </div>
-</div>
 </template>
 <script>
-
 import store from '@/store'
 export default {
   name: 'Front',
-  components: {
-
-  },
+  components: {},
   computed: {
-    info () {
+    info() {
       return store.state.user.info
-    }
+    },
   },
   data() {
     return {
-      navList:[
-             {name:'/front/home', navItem:'首页'},
-             {name:'/front/message', navItem:'留言板'},
-             {name:'/front/article',navItem:'文章'},
-             {name:'/front/activity',navItem:'活动'},
-        ]
-    };
+      navList: [
+        {name: '/front/home', navItem: '首页'},
+        {name: '/front/message', navItem: '留言板'},
+        {name: '/front/article', navItem: '文章'},
+        {name: '/front/activity', navItem: '活动'},
+      ],
+    }
   },
   methods: {
     handleSelect(key, keyPath) {
-        console.log(key, keyPath);
-    }
-  }
+      console.log(key, keyPath)
+    },
+  },
 }
 </script>
 
-<style lang='scss'>
-body{
+<style lang="scss">
+body {
   background: rgb(241, 244, 249);
 }
 .front {
@@ -87,38 +84,37 @@ body{
     width: 1200px;
     // height: 100vh;
     background: white;
-    .operation{
+    .operation {
       position: absolute;
       right: 16px;
       top: 10px;
-      .user-visible{
+      .user-visible {
         display: flex;
         justify-content: space-between;
         width: 195px;
-         p.info{
-            display: flex;
-            align-items: center;
-            cursor: pointer;
-             img{
-              width: 40px;
-              height: 40px;
-              border-radius: 50%;
-              object-fit: cover;
-              margin-right: 10px;
-            }
-            span{
-              color: white;
-            }
-
-         }
+        p.info {
+          display: flex;
+          align-items: center;
+          cursor: pointer;
+          img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 10px;
+          }
+          span {
+            color: white;
+          }
+        }
       }
     }
-    .detailed-content{
-        // min-height: 90vh;
+    .detailed-content {
+      // min-height: 90vh;
     }
   }
 
-  .backtop{
+  .backtop {
     position: fixed;
     right: 10%;
     bottom: 5%;
@@ -126,19 +122,17 @@ body{
     height: 76px;
     padding: 14px 0 12px 0;
     text-align: center;
-    background: #F7F8FA;
+    background: #f7f8fa;
     cursor: pointer;
     font-size: 14px;
-    &:hover{
-      background: #ECF6FF ;
+    &:hover {
+      background: #ecf6ff;
     }
-    i{
+    i {
       display: block;
       margin-bottom: 10px;
       font-size: 25px;
     }
   }
 }
-
-
 </style>

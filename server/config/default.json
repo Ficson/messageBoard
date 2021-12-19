@@ -1,15 +1,15 @@
 {
-	"config_name" : "develop",
-	"jwt_config" : {
-		"secretKey":"message",
-		"expiresIn":86400
-	},
-	"db_config" : {
-		"protocol" : "mysql",
-		"host" : "localhost",
-		"database" : "message-board",
-		"user" : "root",
-		"password" : "123456",
-		"port" : 3306
-	}
+  "config_name": "develop",
+  "jwt_config": {
+    "secretKey": "message",
+    "expiresIn": 86400
+  },
+  "db_config": {
+    "protocol": "mysql",
+    "host": "localhost",
+    "database": "message-board",
+    "user": "root",
+    "password": "123456",
+    "port": 3306
+  }
 }

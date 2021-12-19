@@ -17,11 +17,11 @@
         <div>
           <!-- <i class="el-icon-chat-line-square"></i> -->
           <!-- 亲爱的{{info.name}}，欢迎您登录后台系统， -->
-          <el-button type="primary" style="margin-right:10px;" @click="$router.push('/')">去首页</el-button>
+          <el-button type="primary" style="margin-right: 10px" @click="$router.push('/')">去首页</el-button>
         </div>
-        <div @click="logout" style="cursor: pointer;">
+        <div @click="logout" style="cursor: pointer">
           <span>退出</span>
-          <i class="el-icon-switch-button" ></i>
+          <i class="el-icon-switch-button"></i>
         </div>
       </el-header>
 
@@ -39,31 +39,34 @@ import store from '@/store'
 export default {
   name: 'Layout',
   components: {
-    SideBar
+    SideBar,
   },
   computed: {
-    variables () {
+    variables() {
       return variables
     },
-    info () {
+    info() {
       return store.state.user.info
-    }
+    },
   },
   methods: {
-    logout () {
-      store.dispatch("logout").then(() => {
-        location.reload() //刷新页面（刷新路由，防止重新登录后路由没有更新而找不到路径）
-        this.$router.push("/login")
-      }).catch(()=>{
-        this.$router.push("/login")
-      })
-    }
-  }
+    logout() {
+      store
+        .dispatch('logout')
+        .then(() => {
+          location.reload() //刷新页面（刷新路由，防止重新登录后路由没有更新而找不到路径）
+          this.$router.push('/login')
+        })
+        .catch(() => {
+          this.$router.push('/login')
+        })
+    },
+  },
 }
 </script>
 
 <style scoped lang="scss">
-@import "~@/styles/variables.scss";
+@import '~@/styles/variables.scss';
 .layout-container {
   height: 100%;
 

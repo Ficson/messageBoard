@@ -8,14 +8,11 @@ const mutations = {
   // SET_ORDER_MESSAGE: (state, orderMessage) => {
   //   state.orderMessage = orderMessage
   // },
-
 }
-const actions = {
-
-}
+const actions = {}
 
 export default {
   state,
   mutations,
-  actions
+  actions,
 }

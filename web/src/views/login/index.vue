@@ -1,32 +1,32 @@
 <template>
   <div class="login-container">
-    <form class="login-frame" v-if="type===1">
+    <form class="login-frame" v-if="type === 1">
       <header>用户登录</header>
       <div class="form-item">
         <label class="username-icon">用户名</label>
-        <input v-model="loginForm.username" type="text" name="username"/>
+        <input v-model="loginForm.username" type="text" name="username" />
       </div>
       <div class="form-item">
         <label class="password-icon">密码</label>
-        <input v-model="loginForm.password" type="password" name="password" @keyup="checkCapslock"/>
+        <input v-model="loginForm.password" type="password" name="password" @keyup="checkCapslock" />
       </div>
       <button class="login-btn" type="button" :disabled="loginLoading" @click="handleLogin">登录</button>
       <p>没有账号？<a @click="goRegister">去注册</a></p>
     </form>
     <!-- 注册 -->
-    <form class="login-frame" v-else-if="type===2">
+    <form class="login-frame" v-else-if="type === 2">
       <header>用户注册</header>
       <div class="form-item">
         <label class="username-icon">用户名</label>
-        <input v-model="registerForm.username" id="account" type="text" name="account"/>
+        <input v-model="registerForm.username" id="account" type="text" name="account" />
       </div>
       <div class="form-item">
         <label class="password-icon">密码</label>
-        <input v-model="registerForm.password" type="password" name="password"/>
+        <input v-model="registerForm.password" type="password" name="password" />
       </div>
       <div class="form-item">
         <label class="password-icon">确认密码</label>
-        <input v-model="registerForm.confirmPassword" type="password" name="password" @keyup="checkCapslock"/>
+        <input v-model="registerForm.confirmPassword" type="password" name="password" @keyup="checkCapslock" />
       </div>
       <button class="login-btn" type="button" :disabled="loginLoading" @click="handleLogin">注册</button>
       <p>已有账号？<a @click="goLogin">去登录</a></p>
@@ -34,30 +34,30 @@
   </div>
 </template>
 <script>
-import { mapActions } from 'vuex'
+import {mapActions} from 'vuex'
 import $utils from '@/utils'
 import store from '@/store'
 import LoadingMixin from '@/mixins/LoadingMixin'
 export default {
   name: 'Login',
   mixins: [LoadingMixin],
-  data () {
+  data() {
     return {
       type: 1,
       loginLoading: false,
       loginForm: {
         username: '',
-        password: ''
+        password: '',
       },
       registerForm: {
         username: '',
         password: '',
-        confirmPassword: ''
-      }
+        confirmPassword: '',
+      },
     }
   },
 
-  beforeRouteEnter (to, from, next) {
+  beforeRouteEnter(to, from, next) {
     // 清除登录信息
     if ($utils.getLocalStorage('loginToken')) {
       $utils.removeLocalStorage('loginToken')
@@ -70,101 +70,105 @@ export default {
     // 登录验证
     loginValidate() {
       return new Promise((resolve, reject) => {
-        if(this.loginForm.username === '' || this.loginForm.password === '') {
-          reject('账号和密码不能为空');
+        if (this.loginForm.username === '' || this.loginForm.password === '') {
+          reject('账号和密码不能为空')
         } else {
-          resolve();
+          resolve()
         }
-      });
+      })
     },
-     // 登录验证
+    // 登录验证
     registerValidate() {
       return new Promise((resolve, reject) => {
-        if(this.registerForm.username === '' || this.registerForm.password === '') {
-          reject('账号和密码不能为空');
+        if (this.registerForm.username === '' || this.registerForm.password === '') {
+          reject('账号和密码不能为空')
         } else if (this.registerForm.password !== this.registerForm.confirmPassword) {
-          reject('两次密码不一致');
+          reject('两次密码不一致')
         } else {
-          resolve();
+          resolve()
         }
-      });
+      })
     },
 
     // 点击登录按钮
     handleLogin() {
-      if(this.loginLoading) return ;
-      this.loginLoading = true;
+      if (this.loginLoading) return
+      this.loginLoading = true
       this.loginValidate()
         .then(() => {
-          this.openLoading();
+          this.openLoading()
           this.login({
             username: this.loginForm.username,
-            password: this.loginForm.password
-          }).then(() => {
-            // store.dispatch('getInfo')
-            this.loginLoading = false
-            setTimeout(() => this.closeLoading(), 200);
-            this.$router.push('/')  // 注册完直接登录
-          }).catch(() => {
-            this.loginLoading = false;
-            setTimeout(() => this.closeLoading(), 200);
+            password: this.loginForm.password,
           })
+            .then(() => {
+              // store.dispatch('getInfo')
+              this.loginLoading = false
+              setTimeout(() => this.closeLoading(), 200)
+              this.$router.push('/') // 注册完直接登录
+            })
+            .catch(() => {
+              this.loginLoading = false
+              setTimeout(() => this.closeLoading(), 200)
+            })
         })
-        .catch((err) => {
+        .catch(err => {
           this.$message.error(err)
         })
     },
     // 点击注册按钮
     handleRegister() {
-      if(this.loginLoading) return ;
-        this.loginLoading = true;
-        this.registerValidate()
+      if (this.loginLoading) return
+      this.loginLoading = true
+      this.registerValidate()
         .then(() => {
-          this.openLoading();
+          this.openLoading()
           this.register({
             username: this.registerForm.username,
-            password: this.registerForms.password
-          }).then(() => {
-            this.loginLoading = false
-            setTimeout(() => this.closeLoading(), 200);
-            this.$router.push('/')
-          }).catch(() => {
-            this.loginLoading = false;
-            setTimeout(() => this.closeLoading(), 200);
+            password: this.registerForms.password,
           })
+            .then(() => {
+              this.loginLoading = false
+              setTimeout(() => this.closeLoading(), 200)
+              this.$router.push('/')
+            })
+            .catch(() => {
+              this.loginLoading = false
+              setTimeout(() => this.closeLoading(), 200)
+            })
         })
-        .catch((err) => {
+        .catch(err => {
           this.$message.error(err)
         })
     },
 
     //回车执行查询
-    checkCapslock({ shiftKey, key } = {}) {
-      if (event.keyCode == "13") {
+    checkCapslock({shiftKey, key} = {}) {
+      if (event.keyCode == '13') {
         this.type === 1 ? this.handleLogin() : this.handleRegister()
       }
     },
 
     // 去注册
-    goRegister () {
+    goRegister() {
       this.registerForm.username = ''
       this.registerForm.password = ''
-      this.registerForm.comfirmPassword= ''
+      this.registerForm.comfirmPassword = ''
       this.type = 2
     },
     // 去登录
-    goLogin () {
+    goLogin() {
       this.loginForm.username = ''
       this.loginForm.password = ''
       this.type = 1
-    }
-  }
+    },
+  },
 }
 </script>
 
 <style scoped lang="scss">
-@import "~@/styles/variables.scss";
-@import "~@/styles/mixin.scss";
+@import '~@/styles/variables.scss';
+@import '~@/styles/mixin.scss';
 
 .login-container {
   background-image: url('./../../assets/images/login_bg.png');
@@ -184,13 +188,13 @@ export default {
     position: absolute;
     box-sizing: border-box;
     border-radius: 5px;
-    >header {
-        @include size-color(23px, #5796EB);
-        letter-spacing: 2px;
-        text-align: center;
-        margin: 33px 0;
-        display: block;
-      }
+    > header {
+      @include size-color(23px, #5796eb);
+      letter-spacing: 2px;
+      text-align: center;
+      margin: 33px 0;
+      display: block;
+    }
 
     .form-item {
       width: 360px;
@@ -230,8 +234,8 @@ export default {
         color: #656565;
         width: 258px;
         border: none;
-        outline:none;
-        background-color: #FFFFFF !important;
+        outline: none;
+        background-color: #ffffff !important;
         &:focus {
           outline: none;
         }
@@ -240,13 +244,12 @@ export default {
         // }
         &:-internal-autofill-previewed,
         &:-internal-autofill-selected {
-            -webkit-text-fill-color: #807c7c;
-            transition: background-color 5000s ease-out 0.5s;
+          -webkit-text-fill-color: #807c7c;
+          transition: background-color 5000s ease-out 0.5s;
         }
       }
     }
   }
-
 
   .login-btn {
     border: none;
@@ -260,20 +263,18 @@ export default {
     margin: 40px auto 0px;
     display: block;
     &:hover {
-      box-shadow: 0 3px 6px rgba(0,0,0,0.2);
+      box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
     }
   }
-  p{
+  p {
     text-align: center;
     margin-top: 26px;
-    a{
+    a {
       color: #0089cd;
-      &:hover{
-        color: #41A6F2;
+      &:hover {
+        color: #41a6f2;
       }
     }
   }
 }
-
-
 </style>

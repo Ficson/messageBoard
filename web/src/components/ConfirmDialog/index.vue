@@ -12,8 +12,8 @@
     >
       <slot name="content"></slot>
       <span slot="footer" class="dialog-footer" v-if="isShow">
-          <el-button @click="visible = false" v-if="hasCancelBtn">取 消</el-button>
-          <el-button type="primary" @click="confirm" >{{confirmText}}</el-button>
+        <el-button @click="visible = false" v-if="hasCancelBtn">取 消</el-button>
+        <el-button type="primary" @click="confirm">{{ confirmText }}</el-button>
       </span>
     </el-dialog>
   </div>
@@ -25,34 +25,34 @@ export default {
   data() {
     return {
       visible: this.show,
-      showClose: false
+      showClose: false,
     }
   },
   props: {
     isShow: {
       type: Boolean,
-      default: true
+      default: true,
     },
     show: {
       type: Boolean,
-      default: false
+      default: false,
     },
     title: {
       type: String,
-      default: 'hhh'
+      default: 'hhh',
     },
     hasCancelBtn: {
       type: Boolean,
-      default: true
+      default: true,
     },
     dialogWidth: {
       type: String,
-      default:'365px'
+      default: '365px',
     },
     confirmText: {
       type: String,
-      default: '确认'
-    }
+      default: '确认',
+    },
   },
   watch: {
     show() {
@@ -62,26 +62,26 @@ export default {
   methods: {
     confirm() {
       this.$emit('handleConfirm')
-    }
-  }
+    },
+  },
 }
 </script>
 
 <style lang="scss">
-.confirm-dialog{
-  .el-dialog__header{
+.confirm-dialog {
+  .el-dialog__header {
     height: 40px;
-    background: #0089CD;
+    background: #0089cd;
     text-align: center;
     padding-top: 10px;
   }
-  .el-dialog__title{
-    color:white;
+  .el-dialog__title {
+    color: white;
   }
-  .el-dialog__footer{
-    text-align: center!important;
+  .el-dialog__footer {
+    text-align: center !important;
   }
-  .el-dialog__body{
+  .el-dialog__body {
     padding: 30px 20px 5px;
   }
 }

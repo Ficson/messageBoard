@@ -2,13 +2,12 @@
 import Vue from 'vue'
 import moment from 'moment'
 
-
 let _this = Vue.prototype
 /**
  * 转换时间格式
  * @param {number} time
  */
-export function formatDatetime (time) {
+export function formatDatetime(time) {
   if (typeof time === 'number') return _this.$utils.parseTime(+time, '{y}-{m}-{d} {h}:{i}:{s}')
   return time
 }
@@ -16,7 +15,7 @@ export function formatDatetime (time) {
 /**
  * @param {number} time
  */
-export function timeAgo (time) {
+export function timeAgo(time) {
   time = new Date(time).getTime()
   let now = new Date().getTime()
   let oneMinute = 60000
@@ -42,7 +41,7 @@ export function timeAgo (time) {
  * 金额转换 分-元
  * @param {number} value
  */
-export function moneyF2Y (value) {
+export function moneyF2Y(value) {
   return (parseFloat(value) / 100).toFixed(2)
 }
 
@@ -50,7 +49,7 @@ export function moneyF2Y (value) {
  * 10000 转换为 "10,000" 可用于数目大的金额转化
  * @param {number} num
  */
-export function toThousandFilter (num) {
+export function toThousandFilter(num) {
   return (+num || 0).toString().replace(/^-?\d+/g, m => m.replace(/(?=(?!\b)(\d{3})+$)/g, ','))
 }
 
@@ -58,6 +57,6 @@ export function toThousandFilter (num) {
  * 第一位大写
  * @param {String} string
  */
-export function uppercaseFirst (string) {
+export function uppercaseFirst(string) {
   return string.charAt(0).toUpperCase() + string.slice(1)
 }

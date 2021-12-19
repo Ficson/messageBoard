@@ -6,30 +6,28 @@
 </template>
 
 <script>
-
 export default {
   name: 'Home',
 
-  data () {
-    return {
-    }
+  data() {
+    return {}
   },
 
-  methods: {}
+  methods: {},
 }
 </script>
 
-<style lang='scss'>
-.home{
-    text-align: center;
-    height: 600px;
-    background: #d0cfed;
-    padding-top: 15px;
-  p{
+<style lang="scss">
+.home {
+  text-align: center;
+  height: 600px;
+  background: #d0cfed;
+  padding-top: 15px;
+  p {
     font-size: 46px;
     font-weight: bold;
   }
-  img{
+  img {
     width: 700px;
   }
 }

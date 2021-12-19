@@ -1,6 +1,6 @@
 @mixin clearfix {
   &:after {
-    content: "";
+    content: '';
     display: table;
     clear: both;
   }
@@ -44,21 +44,15 @@
     border-bottom: $color-border-style;
     border-left: $transparent-border-style;
     border-right: $transparent-border-style;
-  }
-
-  @else if $direction==right {
+  } @else if $direction==right {
     border-left: $color-border-style;
     border-top: $transparent-border-style;
     border-bottom: $transparent-border-style;
-  }
-
-  @else if $direction==down {
+  } @else if $direction==down {
     border-top: $color-border-style;
     border-left: $transparent-border-style;
     border-right: $transparent-border-style;
-  }
-
-  @else if $direction==left {
+  } @else if $direction==left {
     border-right: $color-border-style;
     border-top: $transparent-border-style;
     border-bottom: $transparent-border-style;
@@ -66,13 +60,11 @@
 }
 
 @mixin size-color($size, $color) {
-
   font-size: $size;
   color: $color;
 }
 
 @mixin base-image($imgpath, $width, $height) {
-
   display: inline-block;
   background-image: url($imgpath);
   width: $width;
@@ -82,7 +74,6 @@
 }
 
 @mixin absolute-align-center {
-
   position: absolute;
   left: 50%;
   transform: translateX(-50%);

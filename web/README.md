@@ -1,11 +1,13 @@
 # admin-test
 
 ## 项目安装依赖包
+
 ```
 npm install
 ```
 
 ### 启动项目
+
 ```
 npm run serve
 ```
@@ -53,17 +55,17 @@ npm run build:prod
 }
 ```
 
-- 不设置roles时，表示该路由没有权限，任何人都可看
+- 不设置 roles 时，表示该路由没有权限，任何人都可看
 
 ### Axios:
 
-- 代码内未登录的状态码是20003，可根据后端修改
-- 当是post请求时，isqs可设置为true，此时传参的类型是formData
+- 代码内未登录的状态码是 20003，可根据后端修改
+- 当是 post 请求时，isqs 可设置为 true，此时传参的类型是 formData
 
 ### IconFont:
 
-1. 可直接从iconfont上下载svg图片
-2. 调用SvgIcon组件，icon-class为svg的名称，可自定义class，改变其大小
+1. 可直接从 iconfont 上下载 svg 图片
+2. 调用 SvgIcon 组件，icon-class 为 svg 的名称，可自定义 class，改变其大小
 
 实例：
 

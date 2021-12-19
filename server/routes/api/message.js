@@ -13,13 +13,10 @@ router.post('/create', function (req, res, next) {
     } else if (!req.body.category_id) {
       return res.sendResult(null, 400, '模块不能为空')
     }
-    msgServ.createMessage(
-      Object.assign(req.body, { user_id: req.userInfo.uid }),
-      function (err, message) {
-        if (err) return res.sendResult(null, 400, err)
-        res.sendResult(message, 201, '创建成功')
-      }
-    )
+    msgServ.createMessage(Object.assign(req.body, {user_id: req.userInfo.uid}), function (err, message) {
+      if (err) return res.sendResult(null, 400, err)
+      res.sendResult(message, 201, '创建成功')
+    })
     // 回复
   } else if (parseInt(req.body.type) === 1) {
     if (!req.body.content) {
@@ -27,13 +24,10 @@ router.post('/create', function (req, res, next) {
     } else if (!req.body.pid) {
       return res.sendResult(null, 400, '留言id不能为空')
     }
-    msgServ.createReply(
-      Object.assign(req.body, { user_id: req.userInfo.uid }),
-      function (err, message) {
-        if (err) return res.sendResult(null, 400, err)
-        res.sendResult(message, 201, '创建成功')
-      }
-    )
+    msgServ.createReply(Object.assign(req.body, {user_id: req.userInfo.uid}), function (err, message) {
+      if (err) return res.sendResult(null, 400, err)
+      res.sendResult(message, 201, '创建成功')
+    })
   }
 })
 
@@ -46,13 +40,10 @@ router.post('/update', function (req, res, next) {
   } else if (!req.body.category_id) {
     return res.sendResult(null, 400, '模块不能为空')
   }
-  msgServ.updateMessage(
-    Object.assign(req.body, { user_id: req.userInfo.uid }),
-    function (err, message) {
-      if (err) return res.sendResult(null, 400, err)
-      res.sendResult(message, 200, '更新成功')
-    }
-  )
+  msgServ.updateMessage(Object.assign(req.body, {user_id: req.userInfo.uid}), function (err, message) {
+    if (err) return res.sendResult(null, 400, err)
+    res.sendResult(message, 200, '更新成功')
+  })
 })
 
 // 删除
@@ -65,13 +56,10 @@ router.post(
   },
   // 处理业务逻辑
   function (req, res, next) {
-    msgServ.deleteMessage(
-      { id: req.body.id, user_id: req.userInfo.uid },
-      function (err) {
-        if (err) return res.sendResult(null, 400, err)
-        res.sendResult(null, 200, '删除成功')
-      }
-    )
+    msgServ.deleteMessage({id: req.body.id, user_id: req.userInfo.uid}, function (err) {
+      if (err) return res.sendResult(null, 400, err)
+      res.sendResult(null, 200, '删除成功')
+    })
   }
 )
 

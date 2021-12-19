@@ -1,22 +1,17 @@
 <template>
-  <div>
-    活动
-  </div>
+  <div>活动</div>
 </template>
 
 <script>
 export default {
   name: 'Activity',
 
-  data () {
-    return {
-    }
+  data() {
+    return {}
   },
 
-  methods: {}
+  methods: {},
 }
 </script>
 
-<style lang='scss'>
-
-</style>
+<style lang="scss"></style>

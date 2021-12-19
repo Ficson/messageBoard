@@ -14,7 +14,7 @@ var app = express()
  *
  */
 app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({ extended: true })) // json格式
+app.use(bodyParser.urlencoded({extended: true})) // json格式
 
 var database = require('./modules/database')
 database.initialize(app, function (err) {
@@ -32,14 +32,10 @@ database.initialize(app, function (err) {
 var userService = require(path.join(process.cwd(), 'services/userService'))
 
 app.all('/api/*', function (req, res, next) {
-  res.header('Access-Control-Allow-Origin', '*'),
-    res.header('Access-Controld-Allow-Headers', 'X-Requested-With, mytoken')
+  res.header('Access-Control-Allow-Origin', '*'), res.header('Access-Controld-Allow-Headers', 'X-Requested-With, mytoken')
   res.header('Access-Control-Allow-Headers', 'X-Requested-With, Authorization')
   res.setHeader('Content-Type', 'appliction/json;charset=utt-8')
-  res.header(
-    'Access-Control-Allow-Headers',
-    'Content-Type,Content-Length, Authoriztion,Accept, X-Requested-With'
-  )
+  res.header('Access-Control-Allow-Headers', 'Content-Type,Content-Length, Authoriztion,Accept, X-Requested-With')
   res.header('Access-Control-Allow-Methods', 'PUT, POST, GET, DELETE, OPTIONS')
   res.header('X-Powered-By', '3.2.1')
   if (req.method == 'OPTIONS') {

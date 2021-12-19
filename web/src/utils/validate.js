@@ -7,7 +7,7 @@
  *  @param {Array} conditions: 条件字段 例如： ['2', '10'] ,则验证长度错误会提示: 密码的长度在2到10个字符,以传入数组的条件去做验证, 验证的提示{1}开始将匹配的是当前数组
  * @return {obj} { result, message } 验证结果对象
  */
-export default (obj) => {
+export default obj => {
   let reg
   const validatorObj = {
     // 验证定义
@@ -29,7 +29,7 @@ export default (obj) => {
         repeat: '两次输入的{0}不一致',
         email: '邮箱格式不正确',
         password: '请输入由大小写字母+数字组成的6-16位密码',
-        fixedNum: '请输入{1}位数字'
+        fixedNum: '请输入{1}位数字',
       },
       // 验证的方法, 返回一个布尔值
       methods: {
@@ -62,7 +62,8 @@ export default (obj) => {
         },
         moblie: obj => {
           if (!obj.value) return true
-          reg = /^(1[3,5,8,7]{1}[\d]{9})|(((400)-(\d{3})-(\d{4}))|^((\d{7,8})|(\d{4}|\d{3})-(\d{7,8})|(\d{4}|\d{3})-(\d{3,7,8})-(\d{4}|\d{3}|\d{2}|\d{1})|(\d{7,8})-(\d{4}|\d{3}|\d{2}|\d{1}))$)$/
+          reg =
+            /^(1[3,5,8,7]{1}[\d]{9})|(((400)-(\d{3})-(\d{4}))|^((\d{7,8})|(\d{4}|\d{3})-(\d{7,8})|(\d{4}|\d{3})-(\d{3,7,8})-(\d{4}|\d{3}|\d{2}|\d{1})|(\d{7,8})-(\d{4}|\d{3}|\d{2}|\d{1}))$)$/
           return reg.test(obj.value)
         },
         phone: obj => {
@@ -107,8 +108,8 @@ export default (obj) => {
         fixedNum: obj => {
           if (!obj.value) return true
           return obj.value.length === obj.conditions[0]
-        }
-      }
+        },
+      },
     },
     // 得到验证结果
     checkResult: function (obj) {
@@ -140,11 +141,11 @@ export default (obj) => {
           })
         }
         message = message.replace('{0}', obj.label)
-        return { result, message }
+        return {result, message}
       }
 
-      return { result, message }
-    }
+      return {result, message}
+    },
   }
   return validatorObj.checkResult(obj)
 }

@@ -12,46 +12,41 @@
     :text-color="variables.menuText"
     :active-text-color="variables.menuActiveText"
   >
-    <sidebar-item
-      v-for="route in routers"
-      :key="route.path"
-      :item="route"
-      :base-path="route.path"
-    ></sidebar-item>
+    <sidebar-item v-for="route in routers" :key="route.path" :item="route" :base-path="route.path"></sidebar-item>
   </el-menu>
 </template>
 
 <script>
 import SidebarItem from './SidebarItem'
 import variables from '@/styles/variables.scss'
-import { mapState } from 'vuex'
+import {mapState} from 'vuex'
 export default {
   name: 'SideBar',
-  data () {
+  data() {
     return {
-      isCollapse: false
+      isCollapse: false,
     }
   },
   computed: {
     ...mapState({
-      routers: state => state.user.routers
+      routers: state => state.user.routers,
     }),
-    activeMenu () {
+    activeMenu() {
       const route = this.$route
-      const { meta, path } = route
+      const {meta, path} = route
       if (meta.activeMenu) {
         return meta.activeMenu
       }
       return path
     },
-    variables () {
+    variables() {
       return variables
-    }
+    },
   },
   components: {
-    SidebarItem
+    SidebarItem,
   },
-  mounted () {}
+  mounted() {},
 }
 </script>
 
