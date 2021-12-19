@@ -118,6 +118,7 @@ const actions = {
         const accessedRoutes = generateRoutes (res.role)
         commit('SET_ROUTES', accessedRoutes)
         router.addRoutes(accessedRoutes)
+        console.log(router)
         resolve()
       }).catch(error => {
         reject(error)

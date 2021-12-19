@@ -17,15 +17,20 @@
               </template>
         </el-menu-item>
         <div class="operation">
-          <el-button v-if="!info.id" >登录</el-button>
-          <el-dropdown v-else>
-            <span>{{info.username}}</span>
-            <img :src="info.avatar">
-            <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item>退出登录</el-dropdown-item>
-              <el-dropdown-item>设置</el-dropdown-item>
-            </el-dropdown-menu>
-          </el-dropdown>
+          <el-button v-if="!info.id" @click="$router.push ('/login');">登录</el-button>
+          <div v-if="info.id" class="user-visible">
+            <el-dropdown>
+              <p class="info">
+                <img :src="info.avatar">
+                <span>{{info.username}}</span>
+              </p>
+              <el-dropdown-menu slot="dropdown">
+                <el-dropdown-item>退出登录</el-dropdown-item>
+                <el-dropdown-item>设置</el-dropdown-item>
+              </el-dropdown-menu>
+            </el-dropdown>
+            <el-button plain @click="$router.push('/myMessageManage/index')">进入后台</el-button>
+          </div>
         </div>
     </el-menu>
     <el-main class="detailed-content">
@@ -80,18 +85,36 @@ body{
   .inner {
     margin: 0 auto;
     width: 1200px;
-    height: 100vh;
+    // height: 100vh;
     background: white;
     .operation{
       position: absolute;
       right: 16px;
       top: 10px;
-      img{
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-        object-fit: cover;
+      .user-visible{
+        display: flex;
+        justify-content: space-between;
+        width: 195px;
+         p.info{
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+             img{
+              width: 40px;
+              height: 40px;
+              border-radius: 50%;
+              object-fit: cover;
+              margin-right: 10px;
+            }
+            span{
+              color: white;
+            }
+
+         }
       }
+    }
+    .detailed-content{
+        // min-height: 90vh;
     }
   }
 

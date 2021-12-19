@@ -1,14 +1,13 @@
 <template>
-    <section >
+    <section>
       <header v-show="!editor.visible">
         <div class="left">
           <!-- <i class="el-icon-document"></i> -->
-          <el-input placeholder="输入关键字搜索" style="width:200px;" v-model="keyword"></el-input>
+          <el-input placeholder="输入关键字搜索" style="width:200px;" v-model="keyword" clearable></el-input>
           <el-button type="primary" icon="el-icon-search" class="search" @click="search">搜索</el-button>
         </div>
         <div class="right">
           <el-button type="primary" plain @click="showEditor">我要留言</el-button>
-          <el-button v-if="this.info.id" plain @click="$router.push('/myMessageManage/index')">进入后台</el-button>
         </div>
       </header>
       <div class="editor" v-if="editor.visible">
@@ -141,8 +140,8 @@ export default {
       try {
         let res = await this.$allRequest.getMessageList({
           content: keyword || '',
-          pagenum: this.pagination.pageIndex || this.pageIndex,
-          pagesize: this.pagination.pageSize || this.pageSize
+          pagenum: pageIndex || this.pagination.pageIndex,
+          pagesize: pageSize ||  this.pagination.pageSize
         })
         this.messages = res.list
         this.pagination.total = res.total
@@ -154,7 +153,7 @@ export default {
     },
     // 搜索
     search() {
-      this.loadData(this.keyword)
+      this.loadData(this.keyword, 1)
     },
     // 切换每页显示的数量
     handleSizeChange(size) {

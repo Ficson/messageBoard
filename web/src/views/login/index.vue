@@ -36,6 +36,7 @@
 <script>
 import { mapActions } from 'vuex'
 import $utils from '@/utils'
+import store from '@/store'
 import LoadingMixin from '@/mixins/LoadingMixin'
 export default {
   name: 'Login',
@@ -100,6 +101,7 @@ export default {
             username: this.loginForm.username,
             password: this.loginForm.password
           }).then(() => {
+            // store.dispatch('getInfo')
             this.loginLoading = false
             setTimeout(() => this.closeLoading(), 200);
             this.$router.push('/')  // 注册完直接登录
@@ -187,6 +189,7 @@ export default {
         letter-spacing: 2px;
         text-align: center;
         margin: 33px 0;
+        display: block;
       }
 
     .form-item {
