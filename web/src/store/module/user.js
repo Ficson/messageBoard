@@ -55,7 +55,7 @@ const mutations = {
     state.info = data
   },
   SET_ROUTES: (state, routes) => {
-    state.routers = (routes).concat(baseRoutes)
+    state.routers = routes
   }
 }
 const actions = {
@@ -117,6 +117,7 @@ const actions = {
         commit("SET_USER_INFO", res.info)
         const accessedRoutes = generateRoutes (res.role)
         commit('SET_ROUTES', accessedRoutes)
+        router.options.routes = accessedRoutes.concat(baseRoutes);
         router.addRoutes(accessedRoutes)
         console.log(router)
         resolve()

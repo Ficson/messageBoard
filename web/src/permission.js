@@ -1,4 +1,4 @@
-import router from './router'
+import router from '@/router'
 import store from './store'
 // 进度条插件
 import NProgress from 'nprogress'
@@ -15,28 +15,28 @@ const frontList = ['/front/home', '/front/message', '/front/article', '/front/ac
 
 // 路由跳转
 router.beforeEach(async(to, from, next) => {
+  console.log("from => ", from)
+  console.log("to=> ", to)
   NProgress.start()
   const hasToken = _this.$utils.getLocalStorage('loginToken')
-  const hasGetUserInfo = store.state.user.role !== -1
+  const hasGetUserInfo = store.state.user.role !==-1
   // 判断storage里是否有 'loginToken'
   if (whiteList.includes(to.path)) {
     next()
     // NProgress.done()
   } else if (frontList.includes(to.path)) {
-    hasToken && await store.dispatch('getInfo')
+    hasToken && store.dispatch('getInfo')
     next()
-  } else if (!hasToken) {
+  }
+  else if (!hasToken) {
     next('/login')
   } else if (!hasGetUserInfo) {
-    // try {
-      await store.dispatch('getInfo')
-      console.log("下一步")
-      next({ ...to, replace: true })
-  }
-  else if (to.matched.length === 0) {
-      next('/404')
+      store.dispatch('getInfo').then(()=> {
+        next({ ...to, replace: true }) // 匹配不上会*跳转404
+      })
+  } else if (hasGetUserInfo){
+      next()
     }
-    next()
 })
 
 router.afterEach(() => {

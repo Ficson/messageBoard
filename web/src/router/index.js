@@ -123,9 +123,9 @@ export const menuRoutes = [
     alwaysShow: false,
     children: [
       {
-        path: 'Test',
+        path: 'index',
         component: () => import('@/views/menu/Test/index.vue'),
-        name: 'Test',
+        name: 'index',
         meta: { title: '测试', roles: [1, 2] },
         hidden: true
       }
@@ -138,6 +138,21 @@ export const menuRoutes = [
 ]
 
 export const baseRoutes = [
+  {
+    path: '/backManage',
+    name: 'backManage',
+    component: Layout,
+    meta: { title: '后台首页', roles: [1, 2] },
+    alwaysShow: true,
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/menu/BackIndex'),
+        name: 'BackIndex',
+        meta: { title: '后台首页', roles: [1, 2] }
+      }
+    ]
+  },
   {
     path: '/front',
     name: 'front',
@@ -191,11 +206,11 @@ export const baseRoutes = [
   //   component: () => import('@/views/home/index'),
   //   hidden: true
   // },
-  {
-    path: '/404',
-    component: () => import('@/views/err/404'),
-    hidden: true
-  },
+  // {
+  //   path: '/404',
+  //   component: () => import('@/views/err/404'),
+  //   hidden: true
+  // },
   {
     path: '/403',
     component: () => import('@/views/err/404'),
