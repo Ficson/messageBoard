@@ -35,7 +35,7 @@ request.interceptors.response.use(
       status,
       data: {retCode, msg, model},
     } = response
-    if (status !== 200 && /^2/.test(retCode + '')) {
+    if (status !== 200 || !/^2/.test(retCode + '')) {
       errCodeHandle(retCode, msg)
       return Promise.reject({retCode, msg})
     }

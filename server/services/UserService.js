@@ -29,6 +29,7 @@ module.exports.createUser = function (params, cb) {
         tel: params.tel,
         email: params.email,
         birthday: params.birthday,
+        role_id: 0,
         create_time: moment(new Date()).format('YYYY-MM-DD HH:mm:ss'),
         update_time: moment(new Date()).format('YYYY-MM-DD HH:mm:ss'),
       },

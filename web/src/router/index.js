@@ -137,52 +137,37 @@ export const menuRoutes = [
 
 export const baseRoutes = [
   {
-    path: '/backManage',
-    name: 'backManage',
-    component: Layout,
-    meta: {title: '后台首页', roles: [1, 2]},
-    alwaysShow: true,
-    children: [
-      {
-        path: 'index',
-        component: () => import('@/views/menu/BackIndex'),
-        name: 'BackIndex',
-        meta: {title: '后台首页', roles: [1, 2]},
-      },
-    ],
-  },
-  {
     path: '/front',
     name: 'front',
     component: Home,
-    meta: {title: '前台', roles: [1, 2]},
+    meta: {title: '前台'},
     children: [
       {
         path: 'home',
         name: 'Home',
         component: () => import('@/views/front/home'),
-        meta: {title: '首页', roles: [1, 2]},
+        meta: {title: '首页'},
         alwaysShow: true,
       },
       {
         path: 'message',
         name: 'Message',
         component: () => import('@/views/front/message'),
-        meta: {title: '留言板', roles: [1, 2]},
+        meta: {title: '留言板'},
         alwaysShow: true,
       },
       {
         path: 'article',
         name: 'Article',
         component: () => import('@/views/front/article'),
-        meta: {title: '文章', roles: [1, 2]},
+        meta: {title: '文章'},
         alwaysShow: true,
       },
       {
         path: 'activity',
         name: 'Activity',
         component: () => import('@/views/front/activity'),
-        meta: {title: '活动', roles: [1, 2]},
+        meta: {title: '活动'},
         alwaysShow: true,
       },
     ],
@@ -199,11 +184,6 @@ export const baseRoutes = [
     component: () => import('@/views/login/index'),
     hidden: true,
   },
-  // {
-  //   path: '/home',
-  //   component: () => import('@/views/home/index'),
-  //   hidden: true
-  // },
   // {
   //   path: '/404',
   //   component: () => import('@/views/err/404'),
