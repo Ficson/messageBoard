@@ -17,7 +17,7 @@
 <script>
 export default {
   name: 'Test',
-  methods: {},
+  methods: {}
 }
 </script>
 

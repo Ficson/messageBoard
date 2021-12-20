@@ -51,7 +51,7 @@ export default {
   computed: {
     info() {
       return store.state.user.info
-    },
+    }
   },
   data() {
     return {
@@ -59,8 +59,8 @@ export default {
         {name: '/front/home', navItem: '首页'},
         {name: '/front/message', navItem: '留言板'},
         {name: '/front/article', navItem: '文章'},
-        {name: '/front/activity', navItem: '活动'},
-      ],
+        {name: '/front/activity', navItem: '活动'}
+      ]
     }
   },
   methods: {
@@ -76,8 +76,8 @@ export default {
         .catch(() => {
           this.$router.push('/login')
         })
-    },
-  },
+    }
+  }
 }
 </script>
 

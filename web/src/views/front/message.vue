@@ -98,12 +98,12 @@ import store from '@/store'
 export default {
   name: 'Message',
   components: {
-    Editor,
+    Editor
   },
   computed: {
     info() {
       return store.state.user.info
-    },
+    }
   },
   data() {
     return {
@@ -113,12 +113,12 @@ export default {
         pageIndex: 1,
         pageSize: 10,
         pageArray: [5, 10, 50, 100],
-        total: 0,
+        total: 0
       },
       editor: {
         visible: false,
         content: '',
-        isClear: true,
+        isClear: true
       },
       likeIcon1,
       likeIcon2,
@@ -129,7 +129,7 @@ export default {
       loading: false,
       categoryOptions: [], // 类型列表
       selectedCategory: '',
-      replyPlaceholder: '',
+      replyPlaceholder: ''
     }
   },
   methods: {
@@ -140,7 +140,7 @@ export default {
         let res = await this.$allRequest.getMessageList({
           content: keyword || '',
           pagenum: pageIndex || this.pagination.pageIndex,
-          pagesize: pageSize || this.pagination.pageSize,
+          pagesize: pageSize || this.pagination.pageSize
         })
         this.messages = res.list
         this.pagination.total = res.total
@@ -182,7 +182,7 @@ export default {
       this.categoryOptions = res.map(item => {
         return {
           value: item.id,
-          label: item.name,
+          label: item.name
         }
       })
     },
@@ -205,7 +205,7 @@ export default {
           .messageAdd({
             type: 0,
             content: this.editor.content,
-            category_id: this.selectedCategory,
+            category_id: this.selectedCategory
           })
           .then(() => {
             this.messages = res.list
@@ -228,7 +228,7 @@ export default {
       let status = liked ? -1 : 1
       await this.$allRequest.setLike({
         msg_id: id,
-        status,
+        status
       })
       let offset = liked ? -1 : 1
       if (typeof childIndex === 'undefined') {
@@ -266,7 +266,7 @@ export default {
         pid: id,
         content: this.replyText,
         type: 1,
-        replyPeople,
+        replyPeople
       })
       this.replyText = ''
       this.curItemIndex = ''
@@ -278,12 +278,12 @@ export default {
       this.replyText = ''
       this.curItemIndex = ''
       this.curChildItemIndex = ''
-    },
+    }
   },
   mounted() {
     // store.dispatch('getInfo').then(res => {}) // 获取用户权限
     this.loadData()
-  },
+  }
 }
 </script>
 

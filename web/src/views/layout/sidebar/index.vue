@@ -24,12 +24,12 @@ export default {
   name: 'SideBar',
   data() {
     return {
-      isCollapse: false,
+      isCollapse: false
     }
   },
   computed: {
     ...mapState({
-      routers: state => state.user.routers,
+      routers: state => state.user.routers
     }),
     activeMenu() {
       const route = this.$route
@@ -41,12 +41,12 @@ export default {
     },
     variables() {
       return variables
-    },
+    }
   },
   components: {
-    SidebarItem,
+    SidebarItem
   },
-  mounted() {},
+  mounted() {}
 }
 </script>
 

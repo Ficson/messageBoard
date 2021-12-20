@@ -23,7 +23,7 @@ Object.keys(filters).forEach(key => {
 })
 
 Vue.use(Element, {
-  size: 'medium',
+  size: 'medium'
 })
 
 Vue.config.productionTip = false
@@ -33,5 +33,5 @@ console.log('环境是： ' + process.env.NODE_ENV)
 new Vue({
   router,
   store,
-  render: h => h(App),
+  render: h => h(App)
 }).$mount('#app')

@@ -19,7 +19,7 @@ export default {
         return aget({
           url: api.url,
           params,
-          opts: api.opts || {},
+          opts: api.opts || {}
         })
       } else {
         return apost({
@@ -27,9 +27,9 @@ export default {
           isqs: api.isqs || false,
           data,
           params,
-          opts: api.opts || {},
+          opts: api.opts || {}
         })
       }
     }
-  },
+  }
 }

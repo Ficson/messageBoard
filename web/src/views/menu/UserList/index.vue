@@ -73,31 +73,31 @@ export default {
       userForm: {
         username: '',
         date1: '',
-        date2: '',
+        date2: ''
       },
       tableApi: this.API_USER_LIST,
       queryOpts: [
         {
           label: '用户名',
           name: 'username',
-          type: 'input',
+          type: 'input'
         },
         {
           label: '注册时间',
           name: 'register',
-          type: 'date',
-        },
+          type: 'date'
+        }
       ],
       columns: [
         {
           prop: 'id',
           label: 'id',
-          align: 'center',
+          align: 'center'
         },
         {
           prop: 'username',
           label: '用户名',
-          align: 'center',
+          align: 'center'
         },
         {
           prop: 'avatar',
@@ -105,7 +105,7 @@ export default {
           align: 'center',
           formatter: (row, column) => {
             return `<img src=${row.avatar} style='width: 50px; height: 50px; border-radius:50%;'/>`
-          },
+          }
         },
         {
           prop: 'role_id',
@@ -113,13 +113,13 @@ export default {
           align: 'center',
           formatter: (row, column) => {
             return column.role_id === 1 ? '管理员' : '普通用户'
-          },
+          }
         },
         {
           prop: 'create_time',
           label: '注册时间',
-          align: 'center',
-        },
+          align: 'center'
+        }
       ],
       // 操作按钮组
       operates: {
@@ -135,7 +135,7 @@ export default {
             disabled: false,
             method: (index, row) => {
               this.showDetail(row)
-            },
+            }
           },
           {
             label: '删除',
@@ -146,9 +146,9 @@ export default {
             disabled: false,
             method: (index, row) => {
               this.delUser(row.id)
-            },
-          },
-        ],
+            }
+          }
+        ]
       },
       // ---------------查看详情弹窗--------------
       modal1: {
@@ -166,7 +166,7 @@ export default {
           sex: '',
           email: '',
           role_id: '',
-          create_time: '',
+          create_time: ''
         },
         fieldList: [
           {label: 'id', value: 'id', type: 'input', required: true},
@@ -177,12 +177,12 @@ export default {
           {label: '生日', value: 'birthday', type: 'input', required: true},
           {label: '邮箱', value: 'email', type: 'input', required: true},
           {label: '角色', value: 'role_id', type: 'input', required: true},
-          {label: '注册时间', value: 'create_time', type: 'input', required: true},
+          {label: '注册时间', value: 'create_time', type: 'input', required: true}
         ],
         rules: {}, // 自动根据fieldList生成
         labelWidth: '100px',
         formItemWidth: '48%',
-        contentWidth: '200px',
+        contentWidth: '200px'
       },
       // ---------------添加用户弹窗--------------
       modal2: {
@@ -194,18 +194,18 @@ export default {
         data: {
           username: '',
           password: '',
-          confirmPassword: '',
+          confirmPassword: ''
         },
         fieldList: [
           {label: '用户名', value: 'username', type: 'input', required: true},
           {label: '密码', value: 'password', type: 'input', required: true},
-          {label: '确认密码', value: 'confirmPassword', type: 'input', required: true},
+          {label: '确认密码', value: 'confirmPassword', type: 'input', required: true}
         ],
         rules: {}, // 自动根据fieldList生成
         labelWidth: '100px',
         formItemWidth: '100%',
-        contentWidth: '200px',
-      },
+        contentWidth: '200px'
+      }
     }
   },
 
@@ -220,7 +220,7 @@ export default {
       this.$confirm('确定要删除该用户吗?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
-        type: 'warning',
+        type: 'warning'
       })
         .then(() => {
           this.handleDel(id)
@@ -242,7 +242,7 @@ export default {
       this.modal2.data = {
         username: '',
         password: '',
-        confirmPassword: '',
+        confirmPassword: ''
       }
       this.modal2.show = true
     },
@@ -261,7 +261,7 @@ export default {
           this.$allRequest
             .axyAdd({
               username: this.modal2.data.username,
-              password: this.modal2.data.password,
+              password: this.modal2.data.password
             })
             .then(model => {
               this.modal2.show = false
@@ -272,8 +272,8 @@ export default {
         }
       })
     },
-    handleEvent() {},
-  },
+    handleEvent() {}
+  }
 }
 </script>
 

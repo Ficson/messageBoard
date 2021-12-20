@@ -11,8 +11,8 @@ const apiArray = [
     {
       msg: '成功',
       retCode: 200,
-      model: 1,
-    },
+      model: 1
+    }
   ],
   // // 登出
   // [api.API_LOGOUT.url, {
@@ -28,9 +28,9 @@ const apiArray = [
       retCode: 200,
       model: {
         role: 1,
-        info: {name: '吴彦祖'},
-      },
-    },
-  ],
+        info: {name: '吴彦祖'}
+      }
+    }
+  ]
 ]
 apiArray.forEach(item => mockr(item[0], item[1]))

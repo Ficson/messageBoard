@@ -25,45 +25,45 @@ export default {
   data() {
     return {
       visible: this.show,
-      showClose: false,
+      showClose: false
     }
   },
   props: {
     isShow: {
       type: Boolean,
-      default: true,
+      default: true
     },
     show: {
       type: Boolean,
-      default: false,
+      default: false
     },
     title: {
       type: String,
-      default: 'hhh',
+      default: 'hhh'
     },
     hasCancelBtn: {
       type: Boolean,
-      default: true,
+      default: true
     },
     dialogWidth: {
       type: String,
-      default: '365px',
+      default: '365px'
     },
     confirmText: {
       type: String,
-      default: '确认',
-    },
+      default: '确认'
+    }
   },
   watch: {
     show() {
       this.visible = this.show
-    },
+    }
   },
   methods: {
     confirm() {
       this.$emit('handleConfirm')
-    },
-  },
+    }
+  }
 }
 </script>
 

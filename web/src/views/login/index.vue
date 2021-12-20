@@ -47,13 +47,13 @@ export default {
       loginLoading: false,
       loginForm: {
         username: '',
-        password: '',
+        password: ''
       },
       registerForm: {
         username: '',
         password: '',
-        confirmPassword: '',
-      },
+        confirmPassword: ''
+      }
     }
   },
 
@@ -99,7 +99,7 @@ export default {
           this.openLoading()
           this.login({
             username: this.loginForm.username,
-            password: this.loginForm.password,
+            password: this.loginForm.password
           })
             .then(() => {
               // store.dispatch('getInfo')
@@ -125,7 +125,7 @@ export default {
           this.openLoading()
           this.register({
             username: this.registerForm.username,
-            password: this.registerForms.password,
+            password: this.registerForms.password
           })
             .then(() => {
               this.loginLoading = false
@@ -161,8 +161,8 @@ export default {
       this.loginForm.username = ''
       this.loginForm.password = ''
       this.type = 1
-    },
-  },
+    }
+  }
 }
 </script>
 

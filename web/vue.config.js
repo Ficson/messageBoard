@@ -7,7 +7,7 @@ module.exports = {
   publicPath: process.env.VUE_APP_RESOURCE_URL,
   productionSourceMap: process.env.NODE_ENV !== 'production',
   devServer: {
-    proxy: 'http://127.0.0.1:8889',
+    proxy: 'http://127.0.0.1:8889'
   },
   configureWebpack: config => {
     if (process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'proxy') config.devtool = 'source-map'
@@ -18,7 +18,7 @@ module.exports = {
      */
     config.module.rule('svg').uses.clear() // 清除默认的file-loader
     config.module.rule('svg').include.add(resolve('src/icons')).end().use('svg-sprite-loader').loader('svg-sprite-loader').options({
-      symbolId: 'icon-[name]',
+      symbolId: 'icon-[name]'
     })
 
     /**
@@ -30,22 +30,22 @@ module.exports = {
         viewport: 'width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no,shrink-to-fit=no',
         'X-UA-Compatible': {
           'http-equiv': 'X-UA-Compatible',
-          content: 'IE=edge',
+          content: 'IE=edge'
         },
         'Cache-Control': {
           'http-equiv': 'Cache-Control',
-          content: 'no-cache, no-store, must-revalidate',
+          content: 'no-cache, no-store, must-revalidate'
         },
         Pragma: {
           'http-equiv': 'Pragma',
-          content: 'no-cache',
+          content: 'no-cache'
         },
         Expires: {
           'http-equiv': 'Expires',
-          content: '0',
-        },
+          content: '0'
+        }
       }
       return args
     })
-  },
+  }
 }

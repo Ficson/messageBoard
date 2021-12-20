@@ -39,7 +39,7 @@ import store from '@/store'
 export default {
   name: 'Layout',
   components: {
-    SideBar,
+    SideBar
   },
   computed: {
     variables() {
@@ -47,7 +47,7 @@ export default {
     },
     info() {
       return store.state.user.info
-    },
+    }
   },
   methods: {
     logout() {
@@ -60,8 +60,8 @@ export default {
         .catch(() => {
           this.$router.push('/login')
         })
-    },
-  },
+    }
+  }
 }
 </script>
 

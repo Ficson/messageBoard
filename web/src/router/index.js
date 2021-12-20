@@ -42,9 +42,9 @@ export const menuRoutes = [
         path: 'index',
         component: () => import('@/views/menu/MyMessages'),
         name: 'MyMessages',
-        meta: {title: '我的留言', roles: [1, 2]},
-      },
-    ],
+        meta: {title: '我的留言', roles: [1, 2]}
+      }
+    ]
   },
   {
     path: '/userManage',
@@ -57,9 +57,9 @@ export const menuRoutes = [
         path: 'index',
         component: () => import('@/views/menu/UserList'),
         name: 'UserList',
-        meta: {title: '用户列表', roles: [1]},
-      },
-    ],
+        meta: {title: '用户列表', roles: [1]}
+      }
+    ]
   },
   {
     path: '/permissionManage',
@@ -72,9 +72,9 @@ export const menuRoutes = [
         path: 'index',
         component: () => import('@/views/menu/Permission'),
         name: 'Permission',
-        meta: {title: '权限管理', roles: [1]},
-      },
-    ],
+        meta: {title: '权限管理', roles: [1]}
+      }
+    ]
   },
   {
     path: '/contentManage',
@@ -87,15 +87,15 @@ export const menuRoutes = [
         path: 'index',
         component: () => import('@/views/menu/ContentManager/MessageList'),
         name: 'MessageList',
-        meta: {title: '留言列表', roles: [1]},
+        meta: {title: '留言列表', roles: [1]}
       },
       {
         path: 'CategoryList',
         component: () => import('@/views/menu/ContentManager/CategoryList'),
         name: 'CategoryList',
-        meta: {title: '类型列表', roles: [1]},
-      },
-    ],
+        meta: {title: '类型列表', roles: [1]}
+      }
+    ]
   },
   {
     path: '/personalManage',
@@ -108,9 +108,9 @@ export const menuRoutes = [
         path: 'index',
         component: () => import('@/views/menu/PersonalCenter'),
         name: 'PersonalCenter',
-        meta: {title: '个人中心', roles: [1, 2]},
-      },
-    ],
+        meta: {title: '个人中心', roles: [1, 2]}
+      }
+    ]
   },
 
   {
@@ -125,14 +125,14 @@ export const menuRoutes = [
         component: () => import('@/views/menu/Test/index.vue'),
         name: 'index',
         meta: {title: '测试', roles: [1, 2]},
-        hidden: true,
-      },
-    ],
+        hidden: true
+      }
+    ]
   },
   {
     path: '*',
-    component: () => import('@/views/err/404'),
-  },
+    component: () => import('@/views/err/404')
+  }
 ]
 
 export const baseRoutes = [
@@ -147,42 +147,42 @@ export const baseRoutes = [
         name: 'Home',
         component: () => import('@/views/front/home'),
         meta: {title: '首页'},
-        alwaysShow: true,
+        alwaysShow: true
       },
       {
         path: 'message',
         name: 'Message',
         component: () => import('@/views/front/message'),
         meta: {title: '留言板'},
-        alwaysShow: true,
+        alwaysShow: true
       },
       {
         path: 'article',
         name: 'Article',
         component: () => import('@/views/front/article'),
         meta: {title: '文章'},
-        alwaysShow: true,
+        alwaysShow: true
       },
       {
         path: 'activity',
         name: 'Activity',
         component: () => import('@/views/front/activity'),
         meta: {title: '活动'},
-        alwaysShow: true,
-      },
+        alwaysShow: true
+      }
     ],
-    alwaysShow: true,
+    alwaysShow: true
   },
   ,
   {
     path: '/',
     redirect: '/front/home',
-    hidden: true,
+    hidden: true
   },
   {
     path: '/login',
     component: () => import('@/views/login/index'),
-    hidden: true,
+    hidden: true
   },
   // {
   //   path: '/404',
@@ -192,14 +192,14 @@ export const baseRoutes = [
   {
     path: '/403',
     component: () => import('@/views/err/404'),
-    hidden: true,
-  },
+    hidden: true
+  }
 ]
 
 const createRouter = () =>
   new VueRouter({
     scrollBehavior: () => ({y: 0}),
-    routes: baseRoutes,
+    routes: baseRoutes
   })
 
 const router = createRouter()

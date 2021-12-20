@@ -64,9 +64,9 @@ export default {
         pageIndex: 1,
         pageSize: 10,
         pageArray: [5, 10, 50, 100],
-        total: 0,
+        total: 0
       },
-      loading: false,
+      loading: false
     }
   },
   methods: {
@@ -77,7 +77,7 @@ export default {
           content: keyword || '',
           pagenum: this.pagination.pageIndex || this.pageIndex,
           pagesize: this.pagination.pageSize || this.pageSize,
-          id: store.state.user.info.id,
+          id: store.state.user.info.id
         })
         this.messages = res.list
         this.pagination.total = res.total
@@ -98,11 +98,11 @@ export default {
     handleIndexChange(current) {
       this.pagination.pageIndex = current
       this.loadData(this.keyword, current, this.pagination.pageSize)
-    },
+    }
   },
   mounted() {
     this.loadData()
-  },
+  }
 }
 </script>
 

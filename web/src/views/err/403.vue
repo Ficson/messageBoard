@@ -9,7 +9,7 @@ export default {
   name: '403',
   data() {
     return {}
-  },
+  }
 }
 </script>
 

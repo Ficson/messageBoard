@@ -29,7 +29,7 @@ export default obj => {
         repeat: '两次输入的{0}不一致',
         email: '邮箱格式不正确',
         password: '请输入由大小写字母+数字组成的6-16位密码',
-        fixedNum: '请输入{1}位数字',
+        fixedNum: '请输入{1}位数字'
       },
       // 验证的方法, 返回一个布尔值
       methods: {
@@ -108,8 +108,8 @@ export default obj => {
         fixedNum: obj => {
           if (!obj.value) return true
           return obj.value.length === obj.conditions[0]
-        },
-      },
+        }
+      }
     },
     // 得到验证结果
     checkResult: function (obj) {
@@ -145,7 +145,7 @@ export default obj => {
       }
 
       return {result, message}
-    },
+    }
   }
   return validatorObj.checkResult(obj)
 }

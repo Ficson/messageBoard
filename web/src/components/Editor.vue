@@ -13,22 +13,22 @@ export default {
   data() {
     return {
       editor: '',
-      editorInfo: null,
+      editorInfo: null
     }
   },
   model: {
     prop: 'value',
-    event: 'change',
+    event: 'change'
   },
   props: {
     value: {
       type: String,
-      default: '',
+      default: ''
     },
     isClear: {
       type: Boolean,
-      default: false,
-    },
+      default: false
+    }
   },
   watch: {
     isClear(val) {
@@ -43,7 +43,7 @@ export default {
       if (value !== this.editor.txt.html()) {
         this.editor.txt.html(xss(this.value))
       }
-    },
+    }
   },
   mounted() {
     this.createEditor()
@@ -60,7 +60,7 @@ export default {
       this.editor.customConfig.uploadImgServer = '/admin/file/uploadImg'
       this.editor.customConfig.uploadFileName = 'file'
       this.editor.customConfig.uploadImgHeaders = {
-        Accept: 'application/json, text/plain, */*',
+        Accept: 'application/json, text/plain, */*'
       }
       this.editor.customConfig.uploadImgHooks = {
         before: function (xhr, editor, files) {
@@ -83,7 +83,7 @@ export default {
             insertImg(result.model.url)
           }
           console.log('customInsert', insertImg, result, editor)
-        },
+        }
       }
       // 获取html变化后的内容
       this.editor.customConfig.onchange = html => {
@@ -94,8 +94,8 @@ export default {
 
       // 创建
       this.editor.create()
-    },
-  },
+    }
+  }
 }
 </script>
 

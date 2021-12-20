@@ -62,42 +62,42 @@ export default {
   props: {
     // 自定义类名
     className: {
-      type: String,
+      type: String
     },
     // 表单数据
     data: {
-      type: Object,
+      type: Object
     },
     // 相关字段
     fieldList: {
-      type: Array,
+      type: Array
     },
     // 验证规则
     rules: {
-      type: Object,
+      type: Object
     },
     // label宽度
     labelWidth: {
       type: String,
-      default: '120px',
+      default: '120px'
     },
     // form-item宽度
     formItemWidth: {
       type: String,
-      default: '33.3%',
+      default: '33.3%'
     },
     // 表单内容宽度
     contentWidth: {
       type: String,
-      default: '200px',
+      default: '200px'
     },
     refObj: {
-      type: Object,
-    },
+      type: Object
+    }
   },
   data() {
     return {
-      listTypeInfo: this.$selectList, // 所有下拉框的选项
+      listTypeInfo: this.$selectList // 所有下拉框的选项
     }
   },
   watch: {
@@ -107,8 +107,8 @@ export default {
         this.$emit('update:refObj', this.$refs.form)
         // this.initPics()
       },
-      deep: true, // 深度监听
-    },
+      deep: true // 深度监听
+    }
   },
   mounted() {
     // 将form实例返回到父级
@@ -133,8 +133,8 @@ export default {
     // 绑定的相关事件
     handleEvent(event, data) {
       this.$emit('handleEvent', event, data)
-    },
-  },
+    }
+  }
 }
 </script>
 

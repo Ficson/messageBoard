@@ -7,12 +7,12 @@ export default {
         text,
         spinner,
         background,
-        customClass,
+        customClass
       })
     },
 
     closeLoading() {
       this.loadingFormMixin.close()
-    },
-  },
+    }
+  }
 }

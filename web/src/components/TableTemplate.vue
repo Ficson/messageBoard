@@ -150,12 +150,12 @@ export default {
     queryOpts: {
       type: Array,
       required: false,
-      default: () => [],
+      default: () => []
     },
     // 列表API
     tableApi: {
       type: Object,
-      required: true,
+      required: true
     },
     // 数据列表: prop:表头绑定的地段，label：表头名称，align：每列数据展示形式（left, center, right），width:列宽
     // list: {
@@ -165,12 +165,12 @@ export default {
     // 需要展示的列 === prop：列数据对应的属性，label：列名，align：对齐方式，width：列宽
     columns: {
       type: Array,
-      default: () => [],
+      default: () => []
     },
     // width:按钮列宽，fixed：是否固定（left,right）,按钮集合 === label: 文本，type :类型（primary / success / warning / danger / info / text），show：是否显示，icon：按钮图标，plain：是否朴素按钮，disabled：是否禁用，method：回调方法
     operates: {
       type: Object,
-      default: () => {},
+      default: () => {}
     },
     // table 表格的控制参数
     options: {
@@ -180,15 +180,15 @@ export default {
           stripe: false, // 是否为斑马纹 table
           loading: false, // 是否添加表格loading加载动画
           highlightCurrentRow: false, // 是否支持当前行高亮显示
-          mutiSelect: false, // 是否支持列表项选中功能
+          mutiSelect: false // 是否支持列表项选中功能
         }
-      },
+      }
     },
     // 多行选中
     selectedRows: {
       type: Array,
-      default: () => [],
-    },
+      default: () => []
+    }
   },
   data() {
     return {
@@ -200,10 +200,10 @@ export default {
         pageIndex: 1,
         pageSize: 10,
         pageArray: [5, 10, 50, 100],
-        total: 0,
+        total: 0
       },
       list: [],
-      returnModel: {}, //返回的数据，如果调用的组件要用这个数据，返回这个
+      returnModel: {} //返回的数据，如果调用的组件要用这个数据，返回这个
     }
   },
   created() {},
@@ -223,8 +223,8 @@ export default {
         }
       },
       // 代表在wacth里声明了firstName这个方法之后立即先去执行handler方法
-      immediate: true,
-    },
+      immediate: true
+    }
   },
   methods: {
     // tableQueryData(pageSize, pageIndex) {
@@ -253,10 +253,10 @@ export default {
           {},
           {
             pageSize: pageSize || this.pagination.pageSize,
-            pageIndex: pageIndex || this.pagination.pageIndex,
+            pageIndex: pageIndex || this.pagination.pageIndex
           },
           this.queryData
-        ),
+        )
       })
         .then(model => {
           this.options.loading = false
@@ -278,8 +278,8 @@ export default {
     // 多行选中
     handleSelectionChange(val) {
       this.$emit('update:selectedRows', selectedRows)
-    },
-  },
+    }
+  }
 }
 </script>
 

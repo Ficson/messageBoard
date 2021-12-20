@@ -19,7 +19,7 @@ export default {
       h: time.getHours(),
       i: time.getMinutes(),
       s: time.getSeconds(),
-      a: time.getDay(),
+      a: time.getDay()
     }
 
     const timeStr = format.replace(/{(y|m|d|h|i|s|a)+}/g, (result, key) => {
@@ -95,5 +95,5 @@ export default {
   // 弹窗
   myMessage(message, type) {
     _this.$message(message, type)
-  },
+  }
 }

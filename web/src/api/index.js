@@ -31,5 +31,5 @@ export default {
   // -------4. 点赞-------------
   API_LIKE_SET: {url: '/api/like/set', type: 'post', isqs: true}, // 点赞
 
-  AAAAAAA: {url: '/aaaaaaa', type: 'post', isqs: true}, // aaaaaa
+  AAAAAAA: {url: '/aaaaaaa', type: 'post', isqs: true} // aaaaaa
 }

@@ -26,16 +26,16 @@ export default {
   props: {
     item: {
       type: Object,
-      required: true,
+      required: true
     },
     basePath: {
       type: String,
-      default: '',
-    },
+      default: ''
+    }
   },
   data() {
     return {
-      onlyOneChild: null,
+      onlyOneChild: null
     }
   },
   computed: {
@@ -43,7 +43,7 @@ export default {
     activeChildren() {
       if (!this.item.children) return []
       return this.item.children.filter(child => !child.hidden)
-    },
+    }
   },
   mounted() {},
   methods: {
@@ -58,8 +58,8 @@ export default {
         return true
       }
       return false
-    },
-  },
+    }
+  }
 }
 </script>
 

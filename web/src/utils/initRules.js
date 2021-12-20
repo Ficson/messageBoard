@@ -10,14 +10,14 @@ export default fieldList => {
       obj[item.value].push({
         required: item.required,
         message: '请' + type + item.label,
-        trigger: item.type === 'select' ? 'change' : 'blur',
+        trigger: item.type === 'select' ? 'change' : 'blur'
       })
     }
     if (item.validator) {
       // 2. 自定义校验
       obj[item.value].push({
         validator: rule[item.validator],
-        trigger: item.type === 'select' ? 'change' : 'blur',
+        trigger: item.type === 'select' ? 'change' : 'blur'
       })
     }
   }

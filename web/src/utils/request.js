@@ -14,7 +14,7 @@ let _this = Vue.prototype
 const request = axios.create({
   baseURL: process.env.VUE_APP_BASE_API,
   timeout: 30000,
-  withCredentials: true, // 是否开启跨域请求验证
+  withCredentials: true // 是否开启跨域请求验证
   // token不能在这里写，这里写的话就固定死了
 })
 
@@ -33,7 +33,7 @@ request.interceptors.response.use(
     console.log(response)
     const {
       status,
-      data: {retCode, msg, model},
+      data: {retCode, msg, model}
     } = response
     if (status !== 200 || !/^2/.test(retCode + '')) {
       errCodeHandle(retCode, msg)
@@ -63,7 +63,7 @@ const errCodeHandle = (retCode = '', msg = '') => {
         callback() {
           router.push('/login')
           NProgress.done()
-        },
+        }
       })
     } else {
       router.push('/login')
@@ -73,7 +73,7 @@ const errCodeHandle = (retCode = '', msg = '') => {
     MessageBox.alert(msg || '未知错误  错误码：' + retCode, '操作失败', {
       confirmButtonText: '确定',
       type: 'error',
-      roundButton: true,
+      roundButton: true
     })
   }
 }

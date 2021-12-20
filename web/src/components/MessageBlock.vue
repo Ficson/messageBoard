@@ -21,17 +21,17 @@ export default {
   props: {
     fontColor: {
       type: String,
-      default: '#1B81C8',
+      default: '#1B81C8'
     },
     backgroundColor: {
       type: String,
-      default: '#E6F6FF',
+      default: '#E6F6FF'
     },
     title: {
       type: String,
-      default: '基本信息',
-    },
-  },
+      default: '基本信息'
+    }
+  }
 }
 </script>
 

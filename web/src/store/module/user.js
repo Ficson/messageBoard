@@ -43,7 +43,7 @@ const generateRoutes = role => {
 const state = {
   role: -1,
   info: {},
-  routers: [],
+  routers: []
 }
 const mutations = {
   SET_ROLES: (state, role) => {
@@ -54,7 +54,7 @@ const mutations = {
   },
   SET_ROUTES: (state, routes) => {
     state.routers = routes
-  },
+  }
 }
 const actions = {
   // 登录请求(其实没有用到vuex)
@@ -64,7 +64,7 @@ const actions = {
       request
         .login({
           username: username.trim(),
-          password: password,
+          password: password
         })
         .then(model => {
           _this.$utils.setLocalStorage('loginToken', model.token, 1000 * 60 * 60 * +process.env.VUE_APP_LOGIN_TOKEN_EXPIRES)
@@ -86,7 +86,7 @@ const actions = {
       request
         .register({
           username: username.trim(),
-          password: password,
+          password: password
         })
         .then(model => {
           // _this.$utils.setLocalStorage('loginToken', username, 1000 * 60 * 60 * +process.env.VUE_APP_LOGIN_TOKEN_EXPIRES)
@@ -135,11 +135,11 @@ const actions = {
           reject(error)
         })
     })
-  },
+  }
 }
 
 export default {
   state,
   mutations,
-  actions,
+  actions
 }

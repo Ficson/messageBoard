@@ -135,19 +135,19 @@ export default {
   props: {
     // 自定义类名
     className: {
-      type: String,
+      type: String
     },
     // 表单数据
     data: {
-      type: Object,
+      type: Object
     },
     // 相关字段
     fieldList: {
-      type: Array,
+      type: Array
     },
     // 验证规则
     rules: {
-      type: Object,
+      type: Object
     },
     // 相关的列表
     // listTypeInfo: {
@@ -156,21 +156,21 @@ export default {
     // label宽度
     labelWidth: {
       type: String,
-      default: '120px',
+      default: '120px'
     },
     // form-item宽度
     formItemWidth: {
       type: String,
-      default: '33.3%',
+      default: '33.3%'
     },
     // 表单内容宽度
     contentWidth: {
       type: String,
-      default: '200px',
+      default: '200px'
     },
     // 绑定表单实例
     refObj: {
-      type: Object,
+      type: Object
     },
     // 是否存在按钮(默认不显示)
     btnSetting: {
@@ -179,16 +179,16 @@ export default {
         return {
           isShow: false,
           confirmText: '保存',
-          validateInside: true,
+          validateInside: true
         }
-      },
-    },
+      }
+    }
   },
   data() {
     return {
       pics: {},
       autoUpload: false,
-      listTypeInfo: this.$selectList, // 所有下拉框的选项
+      listTypeInfo: this.$selectList // 所有下拉框的选项
     }
   },
   watch: {
@@ -197,8 +197,8 @@ export default {
         // 将form实例返回到父级
         this.$emit('update:refObj', this.$refs.form)
       },
-      deep: true, // 深度监听
-    },
+      deep: true // 深度监听
+    }
   },
   mounted() {
     // 将form实例返回到父级
@@ -294,8 +294,8 @@ export default {
       })
       data = this.$utils.deleteEmptyProperty(data)
       return data
-    },
-  },
+    }
+  }
 }
 </script>
 
